@@ -1,70 +1,95 @@
-// Sample course structure for different departments (can be customized)
+// KUET CSE-22 Syllabus Course Structure (Complete 8 Semesters)
 const sampleCourses = {
     1: [ // 1st Year 1st Term
-        { code: 'Math 1101', name: 'Differential Calculus & Co-ordinate Geometry', credit: 3.0 },
-        { code: 'Ph 1101', name: 'Physics I (Mechanics, Properties of Matter & Waves)', credit: 3.0 },
-        { code: 'Ph 1102', name: 'Physics I Sessional', credit: 1.5 },
-        { code: 'Ch 1101', name: 'Chemistry I (Physical & Inorganic Chemistry)', credit: 3.0 },
-        { code: 'Ch 1102', name: 'Chemistry I Sessional', credit: 1.5 },
-        { code: 'ME 1101', name: 'Engineering Drawing', credit: 1.5 },
-        { code: 'Hum 1101', name: 'English', credit: 3.0 },
-        { code: 'Hum 1102', name: 'Bangladesh Studies', credit: 1.5 }
+        { code: 'CSE 1101', name: 'Structured Programming', credit: 3.0 },
+        { code: 'CSE 1102', name: 'Structured Programming Laboratory', credit: 1.5 },
+        { code: 'CSE 1107', name: 'Discrete Mathematics', credit: 3.0 },
+        { code: 'PHY 1107', name: 'Physics', credit: 3.0 },
+        { code: 'PHY 1108', name: 'Physics Laboratory', credit: 1.5 },
+        { code: 'HUM 1107', name: 'English and Human Communication', credit: 3.0 },
+        { code: 'HUM 1108', name: 'English and Human Communication Laboratory', credit: 0.75 },
+        { code: 'MATH 1107', name: 'Differential and Integral Calculus', credit: 3.0 }
     ],
     2: [ // 1st Year 2nd Term
-        { code: 'Math 1201', name: 'Integral Calculus & Differential Equations', credit: 3.0 },
-        { code: 'Ph 1201', name: 'Physics II (Electricity, Magnetism & Modern Physics)', credit: 3.0 },
-        { code: 'Ph 1202', name: 'Physics II Sessional', credit: 1.5 },
-        { code: 'Ch 1201', name: 'Chemistry II (Organic Chemistry)', credit: 3.0 },
-        { code: 'Ch 1202', name: 'Chemistry II Sessional', credit: 1.5 },
-        { code: 'ME 1201', name: 'Workshop Practice', credit: 1.5 },
-        { code: 'CSE 1201', name: 'Computer Programming', credit: 3.0 },
-        { code: 'CSE 1202', name: 'Computer Programming Sessional', credit: 1.5 }
+        { code: 'CSE 1203', name: 'Digital Logic Design', credit: 3.0 },
+        { code: 'CSE 1204', name: 'Digital Logic Design Laboratory', credit: 1.5 },
+        { code: 'CSE 1205', name: 'Object Oriented Programming', credit: 3.0 },
+        { code: 'CSE 1206', name: 'Object Oriented Programming Laboratory', credit: 1.5 },
+        { code: 'CHEM 1207', name: 'Chemistry', credit: 3.0 },
+        { code: 'CHEM 1208', name: 'Chemistry Laboratory', credit: 0.75 },
+        { code: 'EEE 1207', name: 'Basic Electrical Engineering', credit: 3.0 },
+        { code: 'EEE 1208', name: 'Basic Electrical Engineering Laboratory', credit: 1.5 },
+        { code: 'MATH 1207', name: 'Coordinate Geometry and Differential Equations', credit: 3.0 }
     ],
-    3: [ // 2nd Year 1st Term - Add sample courses
-        { code: '', name: 'Course 1', credit: 3.0 },
-        { code: '', name: 'Course 2', credit: 3.0 },
-        { code: '', name: 'Course 3', credit: 3.0 },
-        { code: '', name: 'Course 4', credit: 1.5 },
-        { code: '', name: 'Course 5', credit: 3.0 },
-        { code: '', name: 'Course 6', credit: 1.5 }
+    3: [ // 2nd Year 1st Term
+        { code: 'CSE 2103', name: 'Microprocessors and Microcontrollers', credit: 3.0 },
+        { code: 'CSE 2104', name: 'Microprocessors and Microcontrollers Laboratory', credit: 1.5 },
+        { code: 'CSE 2105', name: 'Data Structures and Algorithms', credit: 3.0 },
+        { code: 'CSE 2106', name: 'Data Structures and Algorithms Laboratory', credit: 1.5 },
+        { code: 'CSE 2113', name: 'Computer Architecture', credit: 3.0 },
+        { code: 'CSE 2114', name: 'Computer Architecture Laboratory', credit: 0.75 },
+        { code: 'EEE 2117', name: 'Analog Electronics', credit: 3.0 },
+        { code: 'EEE 2118', name: 'Analog Electronics Laboratory', credit: 0.75 },
+        { code: 'MATH 2107', name: 'Fourier Analysis and Linear Algebra', credit: 3.0 },
+        { code: 'ME 2170', name: 'Computer Aided Design Laboratory', credit: 0.75 }
     ],
     4: [ // 2nd Year 2nd Term
-        { code: '', name: 'Course 1', credit: 3.0 },
-        { code: '', name: 'Course 2', credit: 3.0 },
-        { code: '', name: 'Course 3', credit: 3.0 },
-        { code: '', name: 'Course 4', credit: 1.5 },
-        { code: '', name: 'Course 5', credit: 3.0 },
-        { code: '', name: 'Course 6', credit: 1.5 }
+        { code: 'CSE 2200', name: 'Advanced Programming Laboratory', credit: 1.5 },
+        { code: 'CSE 2201', name: 'Algorithm Analysis and Design', credit: 3.0 },
+        { code: 'CSE 2202', name: 'Algorithm Analysis and Design Laboratory', credit: 1.5 },
+        { code: 'CSE 2208', name: 'Numerical Methods Laboratory', credit: 1.5 },
+        { code: 'CSE 2209', name: 'Theory of Computation', credit: 2.0 },
+        { code: 'ECE 2213', name: 'Digital Electronics', credit: 3.0 },
+        { code: 'ECE 2214', name: 'Digital Electronics Laboratory', credit: 1.5 },
+        { code: 'HUM 2207', name: 'Economics and Accounting', credit: 3.0 },
+        { code: 'MATH 2207', name: 'Complex Variable, Vector Analysis and Statistics', credit: 3.0 }
     ],
     5: [ // 3rd Year 1st Term
-        { code: '', name: 'Course 1', credit: 3.0 },
-        { code: '', name: 'Course 2', credit: 3.0 },
-        { code: '', name: 'Course 3', credit: 3.0 },
-        { code: '', name: 'Course 4', credit: 1.5 },
-        { code: '', name: 'Course 5', credit: 3.0 },
-        { code: '', name: 'Course 6', credit: 1.5 }
+        { code: 'CSE 3100', name: 'Web Programming Laboratory', credit: 1.5 },
+        { code: 'CSE 3101', name: 'Operating Systems', credit: 3.0 },
+        { code: 'CSE 3102', name: 'Operating Systems Laboratory', credit: 1.5 },
+        { code: 'CSE 3105', name: 'Embedded Systems and Internet of Things', credit: 3.0 },
+        { code: 'CSE 3106', name: 'Embedded Systems and Internet of Things Laboratory', credit: 0.75 },
+        { code: 'CSE 3107', name: 'Applied Statistics and Queuing Theory', credit: 3.0 },
+        { code: 'CSE 3109', name: 'Database Systems', credit: 3.0 },
+        { code: 'CSE 3110', name: 'Database Systems Laboratory', credit: 1.5 },
+        { code: 'CSE 3119', name: 'Information Systems Design', credit: 3.0 },
+        { code: 'CSE 3120', name: 'Information Systems Design Laboratory', credit: 0.75 }
     ],
     6: [ // 3rd Year 2nd Term
-        { code: '', name: 'Course 1', credit: 3.0 },
-        { code: '', name: 'Course 2', credit: 3.0 },
-        { code: '', name: 'Course 3', credit: 3.0 },
-        { code: '', name: 'Course 4', credit: 1.5 },
-        { code: '', name: 'Course 5', credit: 3.0 },
-        { code: '', name: 'Course 6', credit: 1.5 }
+        { code: 'CSE 3200', name: 'System Development Project', credit: 1.5 },
+        { code: 'CSE 3209', name: 'Artificial Intelligence', credit: 3.0 },
+        { code: 'CSE 3210', name: 'Artificial Intelligence Laboratory', credit: 1.5 },
+        { code: 'CSE 3211', name: 'Compiler Design', credit: 3.0 },
+        { code: 'CSE 3212', name: 'Compiler Design Laboratory', credit: 0.75 },
+        { code: 'CSE 3217', name: 'Mobile Computing', credit: 3.0 },
+        { code: 'CSE 3218', name: 'Mobile Computing Laboratory', credit: 0.75 },
+        { code: 'CSE 3219', name: 'Software Engineering and Project Management', credit: 3.0 },
+        { code: 'CSE 3220', name: 'Software Engineering and Project Management Laboratory', credit: 0.75 },
+        { code: 'CSE 3230', name: 'Technical Writing and Seminar', credit: 0.75 },
+        { code: 'HUM 3247', name: 'Engineers and Society', credit: 3.0 }
     ],
     7: [ // 4th Year 1st Term
-        { code: '', name: 'Course 1', credit: 3.0 },
-        { code: '', name: 'Course 2', credit: 3.0 },
-        { code: '', name: 'Course 3', credit: 3.0 },
-        { code: '', name: 'Course 4', credit: 1.5 },
-        { code: '', name: 'Thesis/Project', credit: 1.5 }
+        { code: 'CSE 4000', name: 'Capstone Project/Thesis', credit: 1.5 },
+        { code: 'CSE 4101', name: 'Computer Graphics and Image Processing', credit: 3.0 },
+        { code: 'CSE 4102', name: 'Computer Graphics and Image Processing Laboratory', credit: 0.75 },
+        { code: 'CSE 4105', name: 'Computer Networks', credit: 3.0 },
+        { code: 'CSE 4106', name: 'Computer Networks Laboratory', credit: 1.5 },
+        { code: 'CSE 4115', name: 'Computer Security', credit: 3.0 },
+        { code: 'CSE 4116', name: 'Computer Security Laboratory', credit: 0.75 },
+        { code: 'CSE xxxx', name: 'Optional-I Course (Theory)', credit: 3.0 },
+        { code: 'CSE xxxx', name: 'Optional-I Course (Lab)', credit: 0.75 },
+        { code: 'CSE xxxx', name: 'Optional-I Course (Theory)', credit: 3.0 },
+        { code: 'CSE xxxx', name: 'Optional-I Course (Lab)', credit: 0.75 }
     ],
     8: [ // 4th Year 2nd Term
-        { code: '', name: 'Course 1', credit: 3.0 },
-        { code: '', name: 'Course 2', credit: 3.0 },
-        { code: '', name: 'Course 3', credit: 3.0 },
-        { code: '', name: 'Course 4', credit: 1.5 },
-        { code: '', name: 'Thesis/Project', credit: 1.5 }
+        { code: 'CSE 4000', name: 'Capstone Project/Thesis (Continuation)', credit: 3.0 },
+        { code: 'CSE xxxx', name: 'Optional-II Course', credit: 3.0 },
+        { code: 'CSE xxxx', name: 'Optional-II Course', credit: 3.0 },
+        { code: 'CSE xxxx', name: 'Optional-III Course (Theory)', credit: 3.0 },
+        { code: 'CSE xxxx', name: 'Optional-III Course (Lab)', credit: 0.75 },
+        { code: 'IEM 4227', name: 'Industrial Management', credit: 3.0 },
+        { code: 'HUM 4207', name: 'Entrepreneurship Development', credit: 2.0 }
     ]
 };
 
