@@ -61,6 +61,74 @@ header h1 {
     opacity: 0.85;
 }
 
+/* Student Info Section */
+.student-info-section {
+    background: var(--bg-color);
+    padding: 20px 30px;
+    border-bottom: 2px solid var(--border-color);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.student-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.department-select-full {
+    grid-column: 1 / -1;
+}
+
+@media (min-width: 768px) {
+    .student-info-section {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.student-input-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.student-input-group input {
+    padding: 10px 15px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s;
+}
+
+.student-input-group select {
+    padding: 10px 15px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s;
+    background: white;
+    cursor: pointer;
+}
+
+.student-input-group input:focus,
+.student-input-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.detected-session {
+    display: inline-block;
+    padding: 10px 15px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
 .grade-scale {
     background: var(--bg-color);
     padding: 15px 30px;
@@ -272,17 +340,29 @@ header h1 {
 }
 
 .semester-header-block {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 15px;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
     border-bottom: 2px solid var(--border-color);
 }
 
-.semester-header-block h3 {
+.semester-info {
+    display: flex;
+    gap: 30px;
+    font-size: 0.95rem;
     color: var(--text-primary);
-    font-size: 1.2rem;
+    flex-wrap: wrap;
+    padding: 10px;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+    border-radius: 8px;
+}
+
+.semester-info span {
+    font-size: 0.9rem;
+}
+
+.semester-info strong {
+    color: var(--primary-color);
+    margin-right: 5px;
 }
 
 .semester-gpa-display {
@@ -329,6 +409,21 @@ header h1 {
 
 .courses-table tbody tr:hover {
     background: var(--bg-color);
+}
+
+.sl-no {
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-secondary);
+    width: 60px;
+}
+
+.letter-grade {
+    text-align: center;
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 1rem;
+    width: 100px;
 }
 
 .course-code, .course-name, .course-credit {
@@ -383,6 +478,32 @@ header h1 {
     transform: scale(1.1);
 }
 
+/* Semester Summary */
+.semester-summary {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-top: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.summary-row {
+    display: flex;
+    gap: 30px;
+    margin: 8px 0;
+    flex-wrap: wrap;
+    font-size: 0.95rem;
+}
+
+.summary-row span {
+    color: var(--text-primary);
+}
+
+.summary-row strong {
+    color: var(--primary-color);
+    margin-left: 5px;
+}
+
 .add-course-btn-sem {
     background: var(--success-color);
     color: white;
@@ -398,6 +519,149 @@ header h1 {
 .add-course-btn-sem:hover {
     background: #059669;
     transform: translateY(-2px);
+}
+
+/* Semester action buttons */
+.semester-actions {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+.recalculate-btn-sem {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background-color: var(--primary-color);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.recalculate-btn-sem:hover {
+    background: #1565c0;
+    transform: translateY(-2px);
+}
+
+/* Semester target calculator */
+.semester-target {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.semester-target h4 {
+    margin: 0 0 15px 0;
+    color: var(--text-color);
+    font-size: 1.1rem;
+}
+
+.semester-target-inputs {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.semester-target-inputs label {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.semester-target-inputs input {
+    padding: 8px 12px;
+    border: 2px solid var(--primary-color);
+    border-radius: 6px;
+    font-size: 1rem;
+    width: 120px;
+}
+
+.calculate-target-sem-btn {
+    padding: 8px 16px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.calculate-target-sem-btn:hover {
+    background-color: #1565c0;
+}
+
+.semester-target-result {
+    margin-top: 15px;
+}
+
+.target-achievable,
+.target-impossible,
+.target-achieved {
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.target-achievable {
+    background-color: rgba(46, 204, 113, 0.1);
+    border-left: 4px solid var(--success-color);
+}
+
+.target-impossible {
+    background-color: rgba(231, 76, 60, 0.1);
+    border-left: 4px solid var(--error-color);
+}
+
+.target-achieved {
+    background-color: rgba(52, 152, 219, 0.1);
+    border-left: 4px solid var(--primary-color);
+}
+
+.target-achievable h4,
+.target-impossible h4,
+.target-achieved h4 {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+}
+
+.target-achievable p,
+.target-impossible p,
+.target-achieved p {
+    margin: 5px 0;
+}
+
+.warning-text {
+    color: var(--error-color);
+    font-weight: 600;
+}
+
+.info-text {
+    color: var(--success-color);
+    font-weight: 600;
+}
+
+.toggle-target-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #34495e;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-target-btn:hover {
+    background-color: #2c3e50;
 }
 
 /* Action Buttons */
@@ -455,6 +719,171 @@ header h1 {
 
 .load-btn:hover {
     background: #d97706;
+}
+
+/* Bottom Summary Section */
+.bottom-summary-section {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+    padding: 30px;
+    margin: 30px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.bottom-summary-section h3 {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 700;
+}
+
+.bottom-summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.bottom-summary-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 2px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.bottom-summary-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.bottom-summary-card h4 {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.bottom-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 10px 0;
+}
+
+.bottom-subtext {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Advanced Target Calculators */
+.advanced-targets-section {
+    background: var(--bg-color);
+    padding: 30px;
+    margin: 30px;
+    border-radius: 12px;
+}
+
+.advanced-targets-section h3 {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 700;
+}
+
+.advanced-target-card {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--primary-color);
+}
+
+.advanced-target-card h4 {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.target-description {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.advanced-target-inputs {
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.advanced-target-inputs .input-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.advanced-target-inputs label {
+    display: block;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.advanced-target-inputs input,
+.advanced-target-inputs select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.advanced-target-inputs input:focus,
+.advanced-target-inputs select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.calculate-advanced-btn {
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.calculate-advanced-btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.advanced-target-result {
+    margin-top: 20px;
+}
+
+.advanced-target-result hr {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 10px 0;
 }
 
 footer {
@@ -521,6 +950,45 @@ footer {
     .grade-info span {
         font-size: 0.75rem;
         padding: 4px 8px;
+    }
+    
+    .semester-target-inputs {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .semester-target-inputs input {
+        width: 100%;
+    }
+    
+    .semester-actions {
+        flex-direction: column;
+    }
+    
+    .add-course-btn-sem,
+    .recalculate-btn-sem {
+        width: 100%;
+    }
+    
+    .bottom-summary-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .bottom-value {
+        font-size: 2rem;
+    }
+    
+    .advanced-target-inputs {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .advanced-target-inputs .input-group {
+        width: 100%;
+    }
+    
+    .calculate-advanced-btn {
+        width: 100%;
     }
 }
 

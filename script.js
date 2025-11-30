@@ -1,3 +1,69 @@
+// Global variables
+let baseSession = null;
+let currentDepartment = 'cse'; // 'cse' or 'other'
+
+// Change department and regenerate semesters
+function changeDepartment() {
+    const deptSelect = document.getElementById('departmentSelect');
+    currentDepartment = deptSelect.value;
+    generateAllSemesters();
+    calculateCGPA();
+}
+
+// Get courses for a semester based on department
+function getCoursesForSemester(semNum) {
+    if (currentDepartment === 'cse') {
+        return sampleCourses[semNum] || [];
+    } else {
+        // For other departments, return 10 generic courses
+        const courses = [];
+        for (let i = 1; i <= 10; i++) {
+            courses.push({
+                code: '',
+                name: `Course ${i}`,
+                credit: 3.0
+            });
+        }
+        return courses;
+    }
+}
+
+// Update session based on roll number
+function updateSessionFromRoll() {
+    const rollInput = document.getElementById('studentRoll');
+    const roll = rollInput.value.trim();
+    
+    if (roll.length >= 2) {
+        const firstTwoDigits = roll.substring(0, 2);
+        const year = parseInt(firstTwoDigits);
+        
+        if (!isNaN(year)) {
+            const fullYear = 2000 + year;
+            baseSession = `${fullYear}-${fullYear + 1}`;
+            document.getElementById('detectedSession').textContent = baseSession;
+            
+            // Regenerate all semesters with new session
+            generateAllSemesters();
+        }
+    } else {
+        baseSession = null;
+        document.getElementById('detectedSession').textContent = '-';
+    }
+}
+
+// Get session for a specific semester
+function getSessionForSemester(semNum) {
+    if (!baseSession) {
+        return '-';
+    }
+    
+    const baseYear = parseInt(baseSession.split('-')[0]);
+    const yearOffset = Math.floor((semNum - 1) / 2);
+    const sessionStartYear = baseYear + yearOffset;
+    
+    return `${sessionStartYear}-${sessionStartYear + 1}`;
+}
+
 // KUET CSE-22 Syllabus Course Structure (Complete 8 Semesters)
 const sampleCourses = {
     1: [ // 1st Year 1st Term
@@ -120,42 +186,44 @@ function createSemesterBlock(semNum, year, term) {
     div.id = `semester-${semNum}`;
     
     let coursesHTML = '';
-    const courses = sampleCourses[semNum] || [];
+    const courses = getCoursesForSemester(semNum);
     
     courses.forEach((course, idx) => {
         coursesHTML += `
             <tr class="course-row">
+                <td class="sl-no">${idx + 1}</td>
                 <td><input type="text" class="course-code" value="${course.code}" placeholder="Code"></td>
                 <td><input type="text" class="course-name" value="${course.name}" placeholder="Course Name"></td>
-                <td><input type="number" class="course-credit" value="${course.credit}" min="0" max="6" step="0.5"></td>
+                <td><input type="number" class="course-credit" value="${course.credit}" min="0" max="6" step="0.75"></td>
                 <td>
-                    <select class="course-grade-current">
+                    <select class="course-grade-current" onchange="updateLetterGrade(this); syncExpectedGrade(this)">
                         <option value="">-</option>
-                        <option value="4.00">A+</option>
-                        <option value="3.75">A</option>
-                        <option value="3.50">A-</option>
-                        <option value="3.25">B+</option>
-                        <option value="3.00">B</option>
-                        <option value="2.75">B-</option>
-                        <option value="2.50">C+</option>
-                        <option value="2.25">C</option>
-                        <option value="2.00">D</option>
-                        <option value="0.00">F</option>
+                        <option value="4.00">4.00</option>
+                        <option value="3.75">3.75</option>
+                        <option value="3.50">3.50</option>
+                        <option value="3.25">3.25</option>
+                        <option value="3.00">3.00</option>
+                        <option value="2.75">2.75</option>
+                        <option value="2.50">2.50</option>
+                        <option value="2.25">2.25</option>
+                        <option value="2.00">2.00</option>
+                        <option value="0.00">0.00</option>
                     </select>
                 </td>
+                <td class="letter-grade">-</td>
                 <td>
                     <select class="course-grade-expected">
                         <option value="">-</option>
-                        <option value="4.00">A+</option>
-                        <option value="3.75">A</option>
-                        <option value="3.50">A-</option>
-                        <option value="3.25">B+</option>
-                        <option value="3.00">B</option>
-                        <option value="2.75">B-</option>
-                        <option value="2.50">C+</option>
-                        <option value="2.25">C</option>
-                        <option value="2.00">D</option>
-                        <option value="0.00">F</option>
+                        <option value="4.00">4.00</option>
+                        <option value="3.75">3.75</option>
+                        <option value="3.50">3.50</option>
+                        <option value="3.25">3.25</option>
+                        <option value="3.00">3.00</option>
+                        <option value="2.75">2.75</option>
+                        <option value="2.50">2.50</option>
+                        <option value="2.25">2.25</option>
+                        <option value="2.00">2.00</option>
+                        <option value="0.00">0.00</option>
                     </select>
                 </td>
                 <td><button class="remove-course-btn" onclick="removeCourse(this)">×</button></td>
@@ -163,23 +231,29 @@ function createSemesterBlock(semNum, year, term) {
         `;
     });
     
+    const session = getSessionForSemester(semNum);
+    const yearText = year === 1 ? 'First' : year === 2 ? 'Second' : year === 3 ? 'Third' : 'Fourth';
+    const termText = term === '1st' ? 'First' : 'Second';
+    
     div.innerHTML = `
         <div class="semester-header-block">
-            <h3>Semester ${semNum} - Year ${year} ${term} Term</h3>
-            <div class="semester-gpa-display">
-                <span>SGPA: <strong id="sgpa-${semNum}">-</strong></span>
-                <span>Credits: <strong id="credits-${semNum}">-</strong></span>
+            <div class="semester-info">
+                <span><strong>Session:</strong> ${session}</span>
+                <span><strong>Year:</strong> ${yearText}</span>
+                <span><strong>Term:</strong> ${termText}</span>
             </div>
         </div>
         <div class="courses-table-container">
             <table class="courses-table">
                 <thead>
                     <tr>
-                        <th>Course Code</th>
-                        <th>Course Name</th>
+                        <th>Sl. No.</th>
+                        <th>Course No.</th>
+                        <th>Course Title</th>
                         <th>Credit</th>
-                        <th>Current Grade</th>
-                        <th>Expected Grade</th>
+                        <th>Grade Point</th>
+                        <th>Letter Grade</th>
+                        <th>Expected GP</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -187,8 +261,35 @@ function createSemesterBlock(semNum, year, term) {
                     ${coursesHTML}
                 </tbody>
             </table>
+            <div class="semester-summary">
+                <div class="summary-row">
+                    <span><strong>Credit Taken:</strong> 0.00</span>
+                    <span><strong>Credit Completed:</strong> 0.00</span>
+                    <span><strong>Term GPA:</strong> -</span>
+                    <span><strong>Expected Term GPA:</strong> -</span>
+                </div>
+                <div class="summary-row">
+                    <span><strong>Total Credit Completed:</strong> 0.00</span>
+                    <span><strong>CGPA:</strong> 0.00</span>
+                </div>
+            </div>
         </div>
-        <button class="add-course-btn-sem" onclick="addCourse(${semNum})">+ Add Course</button>
+        <div class="semester-actions">
+            <button class="add-course-btn-sem" onclick="addCourse(${semNum})">+ Add Course</button>
+            <button class="recalculate-btn-sem" onclick="calculateCGPA()">🔄 Recalculate All</button>
+        </div>
+        
+        <!-- Target Calculator for This Semester -->
+        <div class="semester-target" id="semester-target-${semNum}" style="display:none;">
+            <h4>📊 Target Calculator for Remaining Courses</h4>
+            <div class="semester-target-inputs">
+                <label>Expected CGPA After This Semester:</label>
+                <input type="number" id="target-cgpa-sem-${semNum}" min="0" max="4" step="0.01" placeholder="e.g., 3.50">
+                <button class="calculate-target-sem-btn" onclick="calculateSemesterTarget(${semNum})">Calculate Required Grades</button>
+            </div>
+            <div class="semester-target-result" id="target-result-sem-${semNum}"></div>
+        </div>
+        <button class="toggle-target-btn" onclick="toggleSemesterTarget(${semNum})">📈 Show/Hide Target Calculator</button>
     `;
     
     return div;
@@ -198,57 +299,90 @@ function createSemesterBlock(semNum, year, term) {
 function addCourse(semNum) {
     const semester = document.getElementById(`semester-${semNum}`);
     const tbody = semester.querySelector('tbody');
+    const rowCount = tbody.querySelectorAll('.course-row').length;
     
     const newRow = document.createElement('tr');
     newRow.className = 'course-row';
     newRow.innerHTML = `
+        <td class="sl-no">${rowCount + 1}</td>
         <td><input type="text" class="course-code" placeholder="Code"></td>
         <td><input type="text" class="course-name" placeholder="Course Name"></td>
-        <td><input type="number" class="course-credit" min="0" max="6" step="0.5" value="3.0"></td>
+        <td><input type="number" class="course-credit" min="0" max="6" step="0.75" value="3.0"></td>
         <td>
-            <select class="course-grade-current">
+            <select class="course-grade-current" onchange="updateLetterGrade(this); syncExpectedGrade(this)">
                 <option value="">-</option>
-                <option value="4.00">A+</option>
-                <option value="3.75">A</option>
-                <option value="3.50">A-</option>
-                <option value="3.25">B+</option>
-                <option value="3.00">B</option>
-                <option value="2.75">B-</option>
-                <option value="2.50">C+</option>
-                <option value="2.25">C</option>
-                <option value="2.00">D</option>
-                <option value="0.00">F</option>
+                <option value="4.00">4.00</option>
+                <option value="3.75">3.75</option>
+                <option value="3.50">3.50</option>
+                <option value="3.25">3.25</option>
+                <option value="3.00">3.00</option>
+                <option value="2.75">2.75</option>
+                <option value="2.50">2.50</option>
+                <option value="2.25">2.25</option>
+                <option value="2.00">2.00</option>
+                <option value="0.00">0.00</option>
             </select>
         </td>
+        <td class="letter-grade">-</td>
         <td>
             <select class="course-grade-expected">
                 <option value="">-</option>
-                <option value="4.00">A+</option>
-                <option value="3.75">A</option>
-                <option value="3.50">A-</option>
-                <option value="3.25">B+</option>
-                <option value="3.00">B</option>
-                <option value="2.75">B-</option>
-                <option value="2.50">C+</option>
-                <option value="2.25">C</option>
-                <option value="2.00">D</option>
-                <option value="0.00">F</option>
+                <option value="4.00">4.00</option>
+                <option value="3.75">3.75</option>
+                <option value="3.50">3.50</option>
+                <option value="3.25">3.25</option>
+                <option value="3.00">3.00</option>
+                <option value="2.75">2.75</option>
+                <option value="2.50">2.50</option>
+                <option value="2.25">2.25</option>
+                <option value="2.00">2.00</option>
+                <option value="0.00">0.00</option>
             </select>
         </td>
         <td><button class="remove-course-btn" onclick="removeCourse(this)">×</button></td>
     `;
     
     tbody.appendChild(newRow);
+    renumberRows(semNum);
 }
 
 // Remove course
 function removeCourse(btn) {
     const row = btn.closest('tr');
     const tbody = row.parentElement;
+    const semester = row.closest('.semester-block');
+    const semNum = semester.id.replace('semester-', '');
+    
     if (tbody.children.length > 1) {
         row.remove();
+        renumberRows(parseInt(semNum));
     } else {
         alert('At least one course is required per semester!');
+    }
+}
+
+// Renumber serial numbers after add/remove
+function renumberRows(semNum) {
+    const semester = document.getElementById(`semester-${semNum}`);
+    const rows = semester.querySelectorAll('.course-row');
+    rows.forEach((row, idx) => {
+        const slNoCell = row.querySelector('.sl-no');
+        if (slNoCell) {
+            slNoCell.textContent = idx + 1;
+        }
+    });
+}
+
+// Update letter grade display when grade point changes
+function updateLetterGrade(selectElement) {
+    const row = selectElement.closest('tr');
+    const letterGradeCell = row.querySelector('.letter-grade');
+    const gradePoint = parseFloat(selectElement.value);
+    
+    if (!isNaN(gradePoint)) {
+        letterGradeCell.textContent = getLetterGrade(gradePoint);
+    } else {
+        letterGradeCell.textContent = '-';
     }
 }
 
@@ -257,6 +391,8 @@ function calculateCGPA() {
     let totalPoints = 0;
     let totalCredits = 0;
     let completedCredits = 0;
+    let cumulativeExpectedPoints = 0;
+    let cumulativeExpectedCredits = 0;
     
     // Calculate for each semester
     for (let semNum = 1; semNum <= 8; semNum++) {
@@ -265,10 +401,13 @@ function calculateCGPA() {
         
         let semPoints = 0;
         let semCredits = 0;
+        let semExpectedPoints = 0;
+        let semExpectedCredits = 0;
         
         rows.forEach(row => {
             const credit = parseFloat(row.querySelector('.course-credit').value) || 0;
             const currentGrade = parseFloat(row.querySelector('.course-grade-current').value);
+            const expectedGrade = parseFloat(row.querySelector('.course-grade-expected').value);
             
             totalCredits += credit;
             
@@ -279,22 +418,65 @@ function calculateCGPA() {
                 totalPoints += points;
                 completedCredits += credit;
             }
+            
+            if (!isNaN(expectedGrade)) {
+                const expPoints = credit * expectedGrade;
+                semExpectedPoints += expPoints;
+                semExpectedCredits += credit;
+            }
         });
+        
+        // Add this semester's expected points to cumulative
+        cumulativeExpectedPoints += semExpectedPoints;
+        cumulativeExpectedCredits += semExpectedCredits;
         
         // Update semester GPA display
         const sgpa = semCredits > 0 ? (semPoints / semCredits).toFixed(2) : '-';
-        document.getElementById(`sgpa-${semNum}`).textContent = sgpa;
-        document.getElementById(`credits-${semNum}`).textContent = semCredits > 0 ? semCredits.toFixed(1) : '-';
+        const expectedSGPA = semExpectedCredits > 0 ? (semExpectedPoints / semExpectedCredits).toFixed(2) : '-';
+        
+        // Calculate cumulative expected CGPA up to this semester
+        const cumulativeExpectedCGPA = cumulativeExpectedCredits > 0 ? (cumulativeExpectedPoints / cumulativeExpectedCredits).toFixed(2) : '0.00';
+        
+        // Update semester summary at bottom of table
+        const semesterSummary = semester.querySelector('.semester-summary');
+        if (semesterSummary) {
+            const creditTaken = semester.querySelectorAll('.course-row').length > 0 ? 
+                Array.from(semester.querySelectorAll('.course-credit')).reduce((sum, el) => sum + (parseFloat(el.value) || 0), 0) : 0;
+            
+            semesterSummary.innerHTML = `
+                <div class="summary-row">
+                    <span><strong>Credit Taken:</strong> ${creditTaken.toFixed(2)}</span>
+                    <span><strong>Credit Completed:</strong> ${semCredits.toFixed(2)}</span>
+                    <span><strong>Term GPA:</strong> ${sgpa}</span>
+                    <span><strong>Expected Term GPA:</strong> ${expectedSGPA}</span>
+                </div>
+                <div class="summary-row">
+                    <span><strong>Total Credit Completed:</strong> ${completedCredits.toFixed(2)}</span>
+                    <span><strong>CGPA:</strong> ${completedCredits > 0 ? (totalPoints / completedCredits).toFixed(2) : '0.00'}</span>
+                    <span><strong>Expected CGPA:</strong> ${cumulativeExpectedCGPA}</span>
+                </div>
+            `;
+        }
     }
     
     // Calculate overall CGPA
-    const cgpa = completedCredits > 0 ? (totalPoints / completedCredits).toFixed(2) : 0;
+    const cgpa = completedCredits > 0 ? (totalPoints / completedCredits).toFixed(2) : '0.00';
     const percentage = cgpaToPercentage(parseFloat(cgpa));
+    
+    // Calculate expected CGPA (total from all semesters)
+    const expectedCGPA = cumulativeExpectedCredits > 0 ? (cumulativeExpectedPoints / cumulativeExpectedCredits).toFixed(2) : '0.00';
     
     // Update summary
     document.getElementById('currentCGPA').textContent = cgpa;
-    document.getElementById('currentPercentage').textContent = percentage + '%';
-    document.getElementById('totalCredits').textContent = completedCredits.toFixed(1);
+    document.getElementById('currentPercentage').textContent = percentage;
+    document.getElementById('totalCredits').textContent = completedCredits.toFixed(2);
+    
+    // Update bottom summary section
+    document.getElementById('completedCredits').textContent = completedCredits.toFixed(2);
+    document.getElementById('bottomCurrentGPA').textContent = cgpa;
+    document.getElementById('bottomCurrentPercentage').textContent = percentage;
+    document.getElementById('bottomExpectedGPA').textContent = expectedCGPA;
+    document.getElementById('bottomExpectedPercentage').textContent = cgpaToPercentage(parseFloat(expectedCGPA));
     
     // Update academic status
     updateAcademicStatus(parseFloat(cgpa), completedCredits);
@@ -420,6 +602,9 @@ function getLetterGrade(gpa) {
 // Save data to localStorage
 function saveData() {
     const data = {
+        department: currentDepartment,
+        studentName: document.getElementById('studentName').value,
+        studentRoll: document.getElementById('studentRoll').value,
         semesters: []
     };
     
@@ -453,6 +638,21 @@ function loadSavedData() {
     try {
         const data = JSON.parse(savedData);
         
+        // Restore department
+        if (data.department) {
+            currentDepartment = data.department;
+            document.getElementById('departmentSelect').value = data.department;
+        }
+        
+        // Restore student info
+        if (data.studentName) {
+            document.getElementById('studentName').value = data.studentName;
+        }
+        if (data.studentRoll) {
+            document.getElementById('studentRoll').value = data.studentRoll;
+            updateSessionFromRoll(); // Update session based on loaded roll
+        }
+        
         for (let semNum = 1; semNum <= 8; semNum++) {
             if (!data.semesters[semNum - 1]) continue;
             
@@ -460,41 +660,43 @@ function loadSavedData() {
             const tbody = semester.querySelector('tbody');
             tbody.innerHTML = '';
             
-            data.semesters[semNum - 1].forEach(course => {
+            data.semesters[semNum - 1].forEach((course, idx) => {
                 const row = document.createElement('tr');
                 row.className = 'course-row';
                 row.innerHTML = `
+                    <td class="sl-no">${idx + 1}</td>
                     <td><input type="text" class="course-code" value="${course.code}" placeholder="Code"></td>
                     <td><input type="text" class="course-name" value="${course.name}" placeholder="Course Name"></td>
-                    <td><input type="number" class="course-credit" value="${course.credit}" min="0" max="6" step="0.5"></td>
+                    <td><input type="number" class="course-credit" value="${course.credit}" min="0" max="6" step="0.75"></td>
                     <td>
-                        <select class="course-grade-current">
+                        <select class="course-grade-current" onchange="updateLetterGrade(this); syncExpectedGrade(this)">
                             <option value="">-</option>
-                            <option value="4.00" ${course.currentGrade === '4.00' ? 'selected' : ''}>A+</option>
-                            <option value="3.75" ${course.currentGrade === '3.75' ? 'selected' : ''}>A</option>
-                            <option value="3.50" ${course.currentGrade === '3.50' ? 'selected' : ''}>A-</option>
-                            <option value="3.25" ${course.currentGrade === '3.25' ? 'selected' : ''}>B+</option>
-                            <option value="3.00" ${course.currentGrade === '3.00' ? 'selected' : ''}>B</option>
-                            <option value="2.75" ${course.currentGrade === '2.75' ? 'selected' : ''}>B-</option>
-                            <option value="2.50" ${course.currentGrade === '2.50' ? 'selected' : ''}>C+</option>
-                            <option value="2.25" ${course.currentGrade === '2.25' ? 'selected' : ''}>C</option>
-                            <option value="2.00" ${course.currentGrade === '2.00' ? 'selected' : ''}>D</option>
-                            <option value="0.00" ${course.currentGrade === '0.00' ? 'selected' : ''}>F</option>
+                            <option value="4.00" ${course.currentGrade === '4.00' ? 'selected' : ''}>4.00</option>
+                            <option value="3.75" ${course.currentGrade === '3.75' ? 'selected' : ''}>3.75</option>
+                            <option value="3.50" ${course.currentGrade === '3.50' ? 'selected' : ''}>3.50</option>
+                            <option value="3.25" ${course.currentGrade === '3.25' ? 'selected' : ''}>3.25</option>
+                            <option value="3.00" ${course.currentGrade === '3.00' ? 'selected' : ''}>3.00</option>
+                            <option value="2.75" ${course.currentGrade === '2.75' ? 'selected' : ''}>2.75</option>
+                            <option value="2.50" ${course.currentGrade === '2.50' ? 'selected' : ''}>2.50</option>
+                            <option value="2.25" ${course.currentGrade === '2.25' ? 'selected' : ''}>2.25</option>
+                            <option value="2.00" ${course.currentGrade === '2.00' ? 'selected' : ''}>2.00</option>
+                            <option value="0.00" ${course.currentGrade === '0.00' ? 'selected' : ''}>0.00</option>
                         </select>
                     </td>
+                    <td class="letter-grade">${course.currentGrade ? getLetterGrade(parseFloat(course.currentGrade)) : '-'}</td>
                     <td>
                         <select class="course-grade-expected">
                             <option value="">-</option>
-                            <option value="4.00" ${course.expectedGrade === '4.00' ? 'selected' : ''}>A+</option>
-                            <option value="3.75" ${course.expectedGrade === '3.75' ? 'selected' : ''}>A</option>
-                            <option value="3.50" ${course.expectedGrade === '3.50' ? 'selected' : ''}>A-</option>
-                            <option value="3.25" ${course.expectedGrade === '3.25' ? 'selected' : ''}>B+</option>
-                            <option value="3.00" ${course.expectedGrade === '3.00' ? 'selected' : ''}>B</option>
-                            <option value="2.75" ${course.expectedGrade === '2.75' ? 'selected' : ''}>B-</option>
-                            <option value="2.50" ${course.expectedGrade === '2.50' ? 'selected' : ''}>C+</option>
-                            <option value="2.25" ${course.expectedGrade === '2.25' ? 'selected' : ''}>C</option>
-                            <option value="2.00" ${course.expectedGrade === '2.00' ? 'selected' : ''}>D</option>
-                            <option value="0.00" ${course.expectedGrade === '0.00' ? 'selected' : ''}>F</option>
+                            <option value="4.00" ${course.expectedGrade === '4.00' ? 'selected' : ''}>4.00</option>
+                            <option value="3.75" ${course.expectedGrade === '3.75' ? 'selected' : ''}>3.75</option>
+                            <option value="3.50" ${course.expectedGrade === '3.50' ? 'selected' : ''}>3.50</option>
+                            <option value="3.25" ${course.expectedGrade === '3.25' ? 'selected' : ''}>3.25</option>
+                            <option value="3.00" ${course.expectedGrade === '3.00' ? 'selected' : ''}>3.00</option>
+                            <option value="2.75" ${course.expectedGrade === '2.75' ? 'selected' : ''}>2.75</option>
+                            <option value="2.50" ${course.expectedGrade === '2.50' ? 'selected' : ''}>2.50</option>
+                            <option value="2.25" ${course.expectedGrade === '2.25' ? 'selected' : ''}>2.25</option>
+                            <option value="2.00" ${course.expectedGrade === '2.00' ? 'selected' : ''}>2.00</option>
+                            <option value="0.00" ${course.expectedGrade === '0.00' ? 'selected' : ''}>0.00</option>
                         </select>
                     </td>
                     <td><button class="remove-course-btn" onclick="removeCourse(this)">×</button></td>
@@ -522,6 +724,330 @@ function resetAll() {
     }
 }
 
+// Sync expected grade with current grade
+function syncExpectedGrade(currentGradeSelect) {
+    const row = currentGradeSelect.closest('tr');
+    const expectedGradeSelect = row.querySelector('.course-grade-expected');
+    expectedGradeSelect.value = currentGradeSelect.value;
+}
+
+// Toggle semester target calculator
+function toggleSemesterTarget(semNum) {
+    const targetDiv = document.getElementById(`semester-target-${semNum}`);
+    if (targetDiv.style.display === 'none') {
+        targetDiv.style.display = 'block';
+    } else {
+        targetDiv.style.display = 'none';
+    }
+}
+
+// Calculate required grades for semester target
+function calculateSemesterTarget(semNum) {
+    const targetCGPA = parseFloat(document.getElementById(`target-cgpa-sem-${semNum}`).value);
+    
+    if (!targetCGPA || targetCGPA < 0 || targetCGPA > 4) {
+        alert('Please enter a valid target CGPA between 0 and 4.00!');
+        return;
+    }
+    
+    // Calculate current CGPA up to previous semester
+    let totalPointsBefore = 0;
+    let totalCreditsBefore = 0;
+    
+    for (let i = 1; i < semNum; i++) {
+        const semester = document.getElementById(`semester-${i}`);
+        const rows = semester.querySelectorAll('.course-row');
+        
+        rows.forEach(row => {
+            const credit = parseFloat(row.querySelector('.course-credit').value) || 0;
+            const currentGrade = parseFloat(row.querySelector('.course-grade-current').value);
+            
+            if (!isNaN(currentGrade)) {
+                totalPointsBefore += credit * currentGrade;
+                totalCreditsBefore += credit;
+            }
+        });
+    }
+    
+    // Get current semester credits (from courses without grades)
+    const currentSemester = document.getElementById(`semester-${semNum}`);
+    const currentRows = currentSemester.querySelectorAll('.course-row');
+    let semesterCredits = 0;
+    let gradedCredits = 0;
+    let gradedPoints = 0;
+    
+    currentRows.forEach(row => {
+        const credit = parseFloat(row.querySelector('.course-credit').value) || 0;
+        const currentGrade = parseFloat(row.querySelector('.course-grade-current').value);
+        
+        semesterCredits += credit;
+        
+        if (!isNaN(currentGrade)) {
+            gradedCredits += credit;
+            gradedPoints += credit * currentGrade;
+        }
+    });
+    
+    const remainingCredits = semesterCredits - gradedCredits;
+    
+    if (remainingCredits <= 0) {
+        alert('All courses in this semester are already graded!');
+        return;
+    }
+    
+    // Calculate required points for target CGPA
+    const totalCreditsAfter = totalCreditsBefore + semesterCredits;
+    const requiredTotalPoints = targetCGPA * totalCreditsAfter;
+    const requiredSemesterPoints = requiredTotalPoints - totalPointsBefore - gradedPoints;
+    const requiredGPA = requiredSemesterPoints / remainingCredits;
+    
+    const resultDiv = document.getElementById(`target-result-sem-${semNum}`);
+    
+    if (requiredGPA > 4.00) {
+        resultDiv.innerHTML = `
+            <div class="target-impossible">
+                <h4>❌ Target Not Achievable</h4>
+                <p>Required GPA for remaining ${remainingCredits} credits: <strong>${requiredGPA.toFixed(2)}</strong> (Maximum is 4.00)</p>
+                <p>Maximum achievable CGPA: <strong>${((totalPointsBefore + gradedPoints + 4.00 * remainingCredits) / totalCreditsAfter).toFixed(2)}</strong></p>
+            </div>
+        `;
+    } else if (requiredGPA < 0) {
+        resultDiv.innerHTML = `
+            <div class="target-achieved">
+                <h4>✅ Target Already Exceeded!</h4>
+                <p>Your current performance already exceeds the target CGPA of ${targetCGPA}.</p>
+            </div>
+        `;
+    } else {
+        const percentage = cgpaToPercentage(requiredGPA);
+        resultDiv.innerHTML = `
+            <div class="target-achievable">
+                <h4>🎯 Required Performance for Remaining Courses</h4>
+                <p>You need an average GPA of <strong>${requiredGPA.toFixed(2)}</strong> in your remaining ${remainingCredits} credits.</p>
+                <p>This is approximately <strong>${percentage}%</strong> marks.</p>
+                <p>Target Letter Grade: <strong>${getLetterGrade(requiredGPA)}</strong></p>
+                ${requiredGPA >= 3.75 ? '<p class="warning-text">⚠️ This requires excellent performance (A or A+)!</p>' : ''}
+                ${requiredGPA >= 3.25 && requiredGPA < 3.75 ? '<p class="info-text">✓ This requires very good performance (B+ to A-).</p>' : ''}
+                ${requiredGPA < 3.25 && requiredGPA >= 2.20 ? '<p class="info-text">✓ This is achievable with consistent effort.</p>' : ''}
+            </div>
+        `;
+    }
+}
+
+// Option 1: Calculate required grade point for current semester
+function calculateOption1() {
+    const semNum = parseInt(document.getElementById('currentSemesterSelect').value);
+    const targetCGPA = parseFloat(document.getElementById('targetCGPAOption1').value);
+    
+    if (!targetCGPA || targetCGPA < 0 || targetCGPA > 4) {
+        alert('Please enter a valid target CGPA between 0 and 4.00!');
+        return;
+    }
+    
+    // Calculate completed credits and points before this semester
+    let completedPoints = 0;
+    let completedCredits = 0;
+    
+    for (let i = 1; i < semNum; i++) {
+        const semester = document.getElementById(`semester-${i}`);
+        const rows = semester.querySelectorAll('.course-row');
+        
+        rows.forEach(row => {
+            const credit = parseFloat(row.querySelector('.course-credit').value) || 0;
+            const currentGrade = parseFloat(row.querySelector('.course-grade-current').value);
+            
+            if (!isNaN(currentGrade)) {
+                completedPoints += credit * currentGrade;
+                completedCredits += credit;
+            }
+        });
+    }
+    
+    // Get current semester info
+    const currentSemester = document.getElementById(`semester-${semNum}`);
+    const currentRows = currentSemester.querySelectorAll('.course-row');
+    let semesterCredits = 0;
+    let gradedCredits = 0;
+    let gradedPoints = 0;
+    
+    currentRows.forEach(row => {
+        const credit = parseFloat(row.querySelector('.course-credit').value) || 0;
+        const currentGrade = parseFloat(row.querySelector('.course-grade-current').value);
+        
+        semesterCredits += credit;
+        
+        if (!isNaN(currentGrade)) {
+            gradedCredits += credit;
+            gradedPoints += credit * currentGrade;
+        }
+    });
+    
+    const remainingCredits = semesterCredits - gradedCredits;
+    
+    if (remainingCredits <= 0) {
+        document.getElementById('resultOption1').innerHTML = `
+            <div class="target-achieved">
+                <h4>✅ All courses graded!</h4>
+                <p>All courses in Semester ${semNum} are already graded.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Calculate required grade point
+    const totalCreditsAfter = completedCredits + semesterCredits;
+    const requiredTotalPoints = targetCGPA * totalCreditsAfter;
+    const requiredRemainingPoints = requiredTotalPoints - completedPoints - gradedPoints;
+    const requiredGP = requiredRemainingPoints / remainingCredits;
+    
+    const resultDiv = document.getElementById('resultOption1');
+    
+    if (requiredGP > 4.00) {
+        const maxCGPA = ((completedPoints + gradedPoints + 4.00 * remainingCredits) / totalCreditsAfter).toFixed(2);
+        resultDiv.innerHTML = `
+            <div class="target-impossible">
+                <h4>❌ Target Not Achievable</h4>
+                <p>Required average grade point for ${remainingCredits} remaining credits: <strong>${requiredGP.toFixed(2)}</strong></p>
+                <p>Maximum possible is 4.00 per course.</p>
+                <p>Maximum achievable CGPA after Semester ${semNum}: <strong>${maxCGPA}</strong></p>
+            </div>
+        `;
+    } else if (requiredGP < 0) {
+        resultDiv.innerHTML = `
+            <div class="target-achieved">
+                <h4>✅ Target Already Exceeded!</h4>
+                <p>Your current performance already exceeds the target CGPA of ${targetCGPA}.</p>
+            </div>
+        `;
+    } else {
+        const percentage = cgpaToPercentage(requiredGP);
+        const letterGrade = getLetterGrade(requiredGP);
+        resultDiv.innerHTML = `
+            <div class="target-achievable">
+                <h4>🎯 Required Performance for Semester ${semNum}</h4>
+                <p><strong>Required Grade Point:</strong> ${requiredGP.toFixed(2)} per course (average for ${remainingCredits} credits)</p>
+                <p><strong>Approximate Marks:</strong> ${percentage}%</p>
+                <p><strong>Letter Grade:</strong> ${letterGrade}</p>
+                <hr>
+                <p><small>📋 Completed: ${completedCredits} credits | This Semester: ${semesterCredits} credits (${gradedCredits} graded, ${remainingCredits} remaining)</small></p>
+                ${requiredGP >= 3.75 ? '<p class="warning-text">⚠️ This requires excellent performance (A or A+)!</p>' : ''}
+                ${requiredGP >= 3.25 && requiredGP < 3.75 ? '<p class="info-text">✓ This requires very good performance (B+ to A-).</p>' : ''}
+                ${requiredGP < 3.25 && requiredGP >= 2.20 ? '<p class="info-text">✓ This is achievable with consistent effort.</p>' : ''}
+            </div>
+        `;
+    }
+}
+
+// Option 2: Calculate required grade point for all remaining semesters
+function calculateOption2() {
+    const startSem = parseInt(document.getElementById('startingSemesterSelect').value);
+    const targetCGPA = parseFloat(document.getElementById('targetCGPAOption2').value);
+    
+    if (!targetCGPA || targetCGPA < 0 || targetCGPA > 4) {
+        alert('Please enter a valid target CGPA between 0 and 4.00!');
+        return;
+    }
+    
+    // Calculate completed credits and points before starting semester
+    let completedPoints = 0;
+    let completedCredits = 0;
+    
+    for (let i = 1; i < startSem; i++) {
+        const semester = document.getElementById(`semester-${i}`);
+        const rows = semester.querySelectorAll('.course-row');
+        
+        rows.forEach(row => {
+            const credit = parseFloat(row.querySelector('.course-credit').value) || 0;
+            const currentGrade = parseFloat(row.querySelector('.course-grade-current').value);
+            
+            if (!isNaN(currentGrade)) {
+                completedPoints += credit * currentGrade;
+                completedCredits += credit;
+            }
+        });
+    }
+    
+    // Calculate total remaining credits and already graded credits from starting semester onwards
+    let totalRemainingCredits = 0;
+    let gradedCreditsInRemaining = 0;
+    let gradedPointsInRemaining = 0;
+    
+    for (let i = startSem; i <= 8; i++) {
+        const semester = document.getElementById(`semester-${i}`);
+        const rows = semester.querySelectorAll('.course-row');
+        
+        rows.forEach(row => {
+            const credit = parseFloat(row.querySelector('.course-credit').value) || 0;
+            const currentGrade = parseFloat(row.querySelector('.course-grade-current').value);
+            
+            totalRemainingCredits += credit;
+            
+            if (!isNaN(currentGrade)) {
+                gradedCreditsInRemaining += credit;
+                gradedPointsInRemaining += credit * currentGrade;
+            }
+        });
+    }
+    
+    const ungradedCredits = totalRemainingCredits - gradedCreditsInRemaining;
+    
+    if (ungradedCredits <= 0) {
+        document.getElementById('resultOption2').innerHTML = `
+            <div class="target-achieved">
+                <h4>✅ All remaining courses graded!</h4>
+                <p>All courses from Semester ${startSem} onwards are already graded.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Calculate total credits including all 8 semesters
+    let totalAllCredits = completedCredits + totalRemainingCredits;
+    
+    // Calculate required grade point
+    const requiredTotalPoints = targetCGPA * totalAllCredits;
+    const requiredUngradedPoints = requiredTotalPoints - completedPoints - gradedPointsInRemaining;
+    const requiredGP = requiredUngradedPoints / ungradedCredits;
+    
+    const resultDiv = document.getElementById('resultOption2');
+    
+    if (requiredGP > 4.00) {
+        const maxCGPA = ((completedPoints + gradedPointsInRemaining + 4.00 * ungradedCredits) / totalAllCredits).toFixed(2);
+        resultDiv.innerHTML = `
+            <div class="target-impossible">
+                <h4>❌ Target Not Achievable</h4>
+                <p>Required average grade point for ${ungradedCredits} ungraded credits: <strong>${requiredGP.toFixed(2)}</strong></p>
+                <p>Maximum possible is 4.00 per course.</p>
+                <p>Maximum achievable final CGPA: <strong>${maxCGPA}</strong></p>
+            </div>
+        `;
+    } else if (requiredGP < 0) {
+        resultDiv.innerHTML = `
+            <div class="target-achieved">
+                <h4>✅ Target Already Exceeded!</h4>
+                <p>Your current performance already exceeds the target CGPA of ${targetCGPA}.</p>
+            </div>
+        `;
+    } else {
+        const percentage = cgpaToPercentage(requiredGP);
+        const letterGrade = getLetterGrade(requiredGP);
+        resultDiv.innerHTML = `
+            <div class="target-achievable">
+                <h4>🎯 Required Performance for All Remaining Courses</h4>
+                <p><strong>Required Grade Point:</strong> ${requiredGP.toFixed(2)} per course (average for ${ungradedCredits} credits)</p>
+                <p><strong>Approximate Marks:</strong> ${percentage}%</p>
+                <p><strong>Letter Grade:</strong> ${letterGrade}</p>
+                <hr>
+                <p><small>📋 Completed: ${completedCredits} credits | Remaining Semesters: ${totalRemainingCredits} credits (${gradedCreditsInRemaining} graded, ${ungradedCredits} ungraded)</small></p>
+                <p><small>📊 Total Credits: ${totalAllCredits} | Semesters ${startSem}-8</small></p>
+                ${requiredGP >= 3.75 ? '<p class="warning-text">⚠️ This requires excellent performance (A or A+) consistently!</p>' : ''}
+                ${requiredGP >= 3.25 && requiredGP < 3.75 ? '<p class="info-text">✓ This requires very good performance (B+ to A-) consistently.</p>' : ''}
+                ${requiredGP < 3.25 && requiredGP >= 2.20 ? '<p class="info-text">✓ This is achievable with consistent effort.</p>' : ''}
+            </div>
+        `;
+    }
+}
+
 // Attach event listeners
 function attachEventListeners() {
     document.getElementById('calculateAll').addEventListener('click', calculateCGPA);
@@ -529,4 +1055,12 @@ function attachEventListeners() {
     document.getElementById('saveData').addEventListener('click', saveData);
     document.getElementById('loadData').addEventListener('click', loadData);
     document.getElementById('calculateTarget').addEventListener('click', calculateTargetGPA);
+    
+    // Add event listeners to sync expected grades on page load
+    document.querySelectorAll('.course-grade-current').forEach(select => {
+        select.addEventListener('change', function() {
+            updateLetterGrade(this);
+            syncExpectedGrade(this);
+        });
+    });
 }
