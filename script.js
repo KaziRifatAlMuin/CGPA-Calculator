@@ -164,6 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
     generateAllSemesters();
     attachEventListeners();
     loadSavedData();
+    calculateCGPA();
 });
 
 // Generate all 8 semesters
@@ -192,8 +193,8 @@ function createSemesterBlock(semNum, year, term) {
         coursesHTML += `
             <tr class="course-row">
                 <td class="sl-no">${idx + 1}</td>
-                <td><input type="text" class="course-code" value="${course.code}" placeholder="Code"></td>
-                <td><input type="text" class="course-name" value="${course.name}" placeholder="Course Name"></td>
+                <td><input type="text" class="course-code" value="${course.code}" placeholder="Code" oninput="autoSaveData()"></td>
+                <td><input type="text" class="course-name" value="${course.name}" placeholder="Course Name" oninput="autoSaveData()"></td>
                 <td><input type="number" class="course-credit" value="${course.credit}" min="0" max="6" step="0.75" oninput="calculateCGPA()"></td>
                 <td>
                     <select class="course-grade-current" onchange="updateGradePoint(this); syncExpectedGrade(this)">
@@ -304,8 +305,8 @@ function addCourse(semNum) {
     newRow.className = 'course-row';
     newRow.innerHTML = `
         <td class="sl-no">${rowCount + 1}</td>
-        <td><input type="text" class="course-code" placeholder="Code"></td>
-        <td><input type="text" class="course-name" placeholder="Course Name"></td>
+        <td><input type="text" class="course-code" placeholder="Code" oninput="autoSaveData()"></td>
+        <td><input type="text" class="course-name" placeholder="Course Name" oninput="autoSaveData()"></td>
         <td><input type="number" class="course-credit" min="0" max="6" step="0.75" value="3.0" oninput="calculateCGPA()"></td>
         <td>
             <select class="course-grade-current" onchange="updateGradePoint(this); syncExpectedGrade(this)">
@@ -402,6 +403,9 @@ function calculateCGPA() {
     let cumulativeExpectedPoints = 0;
     let cumulativeExpectedCredits = 0;
     
+    // Auto-calculate smart planner if target is set
+    const hasTarget = document.getElementById('targetCGPATop').value || document.getElementById('targetCGPABottom').value;
+    
     // Calculate for each semester
     for (let semNum = 1; semNum <= 8; semNum++) {
         const semester = document.getElementById(`semester-${semNum}`);
@@ -482,8 +486,13 @@ function calculateCGPA() {
     // Update academic status
     updateAcademicStatus(parseFloat(cgpa), completedCredits);
     
-    // Update remaining credits in target calculator
-    document.getElementById('remainingCredits').value = Math.max(0, 160 - completedCredits).toFixed(1);
+    // Auto-update smart planner if target CGPA is set
+    if (hasTarget) {
+        calculateSmartPlanner();
+    }
+    
+    // Auto-save data
+    autoSaveData();
 }
 
 // Update academic status
@@ -600,12 +609,13 @@ function getLetterGrade(gpa) {
     return 'F';
 }
 
-// Save data to localStorage
-function saveData() {
+// Auto-save data to localStorage (silent, no alert)
+function autoSaveData() {
     const data = {
         department: currentDepartment,
         studentName: document.getElementById('studentName').value,
         studentRoll: document.getElementById('studentRoll').value,
+        targetCGPA: document.getElementById('targetCGPATop').value,
         semesters: []
     };
     
@@ -628,7 +638,6 @@ function saveData() {
     }
     
     localStorage.setItem('kuetCGPAData', JSON.stringify(data));
-    alert('✅ Progress saved successfully!');
 }
 
 // Load data from localStorage
@@ -653,6 +662,10 @@ function loadSavedData() {
             document.getElementById('studentRoll').value = data.studentRoll;
             updateSessionFromRoll(); // Update session based on loaded roll
         }
+        if (data.targetCGPA) {
+            document.getElementById('targetCGPATop').value = data.targetCGPA;
+            document.getElementById('targetCGPABottom').value = data.targetCGPA;
+        }
         
         for (let semNum = 1; semNum <= 8; semNum++) {
             if (!data.semesters[semNum - 1]) continue;
@@ -666,8 +679,8 @@ function loadSavedData() {
                 row.className = 'course-row';
                 row.innerHTML = `
                     <td class="sl-no">${idx + 1}</td>
-                    <td><input type="text" class="course-code" value="${course.code}" placeholder="Code"></td>
-                    <td><input type="text" class="course-name" value="${course.name}" placeholder="Course Name"></td>
+                    <td><input type="text" class="course-code" value="${course.code}" placeholder="Code" oninput="autoSaveData()"></td>
+                    <td><input type="text" class="course-name" value="${course.name}" placeholder="Course Name" oninput="autoSaveData()"></td>
                     <td><input type="number" class="course-credit" value="${course.credit}" min="0" max="6" step="0.75" oninput="calculateCGPA()"></td>
                     <td>
                         <select class="course-grade-current" onchange="updateGradePoint(this); syncExpectedGrade(this)">
@@ -710,18 +723,26 @@ function loadSavedData() {
     }
 }
 
-// Load data manually
-function loadData() {
-    loadSavedData();
-    calculateCGPA();
-    alert('✅ Progress loaded successfully!');
-}
-
-// Reset all data
-function resetAll() {
-    if (confirm('⚠️ Are you sure you want to reset all data? This cannot be undone!')) {
-        localStorage.removeItem('kuetCGPAData');
-        location.reload();
+// Clear all grades (both actual and expected)
+function clearAllGrades() {
+    if (confirm('⚠️ Are you sure you want to clear all grades? This will remove all Letter Grade and Expected Letter Grade entries.')) {
+        for (let semNum = 1; semNum <= 8; semNum++) {
+            const semester = document.getElementById(`semester-${semNum}`);
+            const rows = semester.querySelectorAll('.course-row');
+            
+            rows.forEach(row => {
+                const currentGradeSelect = row.querySelector('.course-grade-current');
+                const expectedGradeSelect = row.querySelector('.course-grade-expected');
+                const gradePointCell = row.querySelector('.grade-point');
+                
+                if (currentGradeSelect) currentGradeSelect.value = '';
+                if (expectedGradeSelect) expectedGradeSelect.value = '';
+                if (gradePointCell) gradePointCell.textContent = '-';
+            });
+        }
+        
+        calculateCGPA();
+        alert('✅ All grades have been cleared!');
     }
 }
 
@@ -852,8 +873,10 @@ function calculateSmartPlanner() {
         topInput.value = bottomInput.value;
     }
     
+    // Clear results if no valid input
     if (!targetCGPA || targetCGPA < 0 || targetCGPA > 4) {
-        alert('Please enter a valid target CGPA between 0 and 4.00!');
+        document.getElementById('resultTop').innerHTML = '';
+        document.getElementById('resultBottom').innerHTML = '';
         return;
     }
     
@@ -985,20 +1008,20 @@ function calculateSmartPlanner() {
 
 // Attach event listeners
 function attachEventListeners() {
-    document.getElementById('resetAll').addEventListener('click', resetAll);
-    document.getElementById('saveData').addEventListener('click', saveData);
-    document.getElementById('loadData').addEventListener('click', loadData);
+    document.getElementById('clearGrades').addEventListener('click', clearAllGrades);
     
-    // Sync Smart Grade Planner inputs
+    // Sync Smart Grade Planner inputs and auto-calculate
     const topInput = document.getElementById('targetCGPATop');
     const bottomInput = document.getElementById('targetCGPABottom');
     
     topInput.addEventListener('input', function() {
         bottomInput.value = this.value;
+        calculateSmartPlanner();
     });
     
     bottomInput.addEventListener('input', function() {
         topInput.value = this.value;
+        calculateSmartPlanner();
     });
     
     // Add event listeners to sync expected grades on page load
@@ -1008,4 +1031,12 @@ function attachEventListeners() {
             syncExpectedGrade(this);
         });
     });
+    
+    // Auto-save when student info changes
+    document.getElementById('studentName').addEventListener('input', autoSaveData);
+    document.getElementById('studentRoll').addEventListener('input', function() {
+        updateSessionFromRoll();
+        autoSaveData();
+    });
+    document.getElementById('departmentSelect').addEventListener('change', autoSaveData);
 }
