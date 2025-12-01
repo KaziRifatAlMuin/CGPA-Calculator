@@ -340,6 +340,79 @@ function createSemesterBlock(semNum, year, term) {
         `;
 	});
 
+	// Generate card view for mobile
+	let cardsHTML = "";
+	courses.forEach((course, idx) => {
+		cardsHTML += `
+            <div class="course-card">
+                <div class="course-card-header">
+                    <span class="course-card-number">#${idx + 1}</span>
+                    <button class="remove-course-btn" onclick="removeCourse(this)">×</button>
+                </div>
+                <div class="course-card-body">
+                    <div class="course-card-field">
+                        <label>Code</label>
+                        <input type="text" class="course-code" value="${
+													course.code
+												}" placeholder="Course Code" oninput="autoSaveData()">
+                    </div>
+                    <div class="course-card-field">
+                        <label>Course Name</label>
+                        <input type="text" class="course-name" value="${
+													course.name
+												}" placeholder="Course Name" oninput="autoSaveData()">
+                    </div>
+                    <div class="course-card-row">
+                        <div class="course-card-field">
+                            <label>Credit</label>
+                            <input type="number" class="course-credit" value="${
+															course.credit
+														}" min="0" max="6" step="0.75" oninput="calculateCGPA()">
+                        </div>
+                        <div class="course-card-field">
+                            <label>Current Grade</label>
+                            <select class="course-grade-current" onchange="updateGradePoint(this); syncExpectedGrade(this)">
+                                <option value="">-</option>
+                                <option value="4.00">A+</option>
+                                <option value="3.75">A</option>
+                                <option value="3.50">A-</option>
+                                <option value="3.25">B+</option>
+                                <option value="3.00">B</option>
+                                <option value="2.75">B-</option>
+                                <option value="2.50">C+</option>
+                                <option value="2.25">C</option>
+                                <option value="2.00">D</option>
+                                <option value="0.00">F</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="course-card-row">
+                        <div class="course-card-field">
+                            <label>Grade Point</label>
+                            <div class="grade-point-display">-</div>
+                        </div>
+                        <div class="course-card-field">
+                            <label>Expected Grade</label>
+                            <select class="course-grade-expected" onchange="calculateCGPA()">
+                                <option value="">-</option>
+                                <option value="4.00">A+</option>
+                                <option value="3.75">A</option>
+                                <option value="3.50">A-</option>
+                                <option value="3.25">B+</option>
+                                <option value="3.00">B</option>
+                                <option value="2.75">B-</option>
+                                <option value="2.50">C+</option>
+                                <option value="2.25">C</option>
+                                <option value="2.00">D</option>
+                                <option value="0.00">F</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+	});
+
 	const session = getSessionForSemester(semNum);
 	const yearText =
 		year === 1
@@ -377,15 +450,19 @@ function createSemesterBlock(semNum, year, term) {
                     ${coursesHTML}
                 </tbody>
             </table>
-            <div class="semester-summary">
-                <div class="summary-row">
-                    <span><strong>Credit Taken:</strong> 0.00</span>
-                    <span><strong>Credit Completed:</strong> 0.00</span>
-                    <span><strong>Term GPA:</strong> -</span>
-                    <span><strong>Expected Term GPA:</strong> -</span>
-                </div>
-                <div class="summary-row">
-                    <span><strong>Total Credit Completed:</strong> 0.00</span>
+        </div>
+        <div class="courses-cards-container">
+            ${cardsHTML}
+        </div>
+        <div class="semester-summary">
+            <div class="summary-row">
+                <span><strong>Credit Taken:</strong> 0.00</span>
+                <span><strong>Credit Completed:</strong> 0.00</span>
+                <span><strong>Term GPA:</strong> -</span>
+                <span><strong>Expected Term GPA:</strong> -</span>
+            </div>
+            <div class="summary-row">
+                <span><strong>Total Credit Completed:</strong> 0.00</span>
                     <span><strong>CGPA:</strong> 0.00</span>
                 </div>
             </div>
@@ -414,8 +491,10 @@ function createSemesterBlock(semNum, year, term) {
 function addCourse(semNum) {
 	const semester = document.getElementById(`semester-${semNum}`);
 	const tbody = semester.querySelector("tbody");
+	const cardsContainer = semester.querySelector(".courses-cards-container");
 	const rowCount = tbody.querySelectorAll(".course-row").length;
 
+	// Add to table
 	const newRow = document.createElement("tr");
 	newRow.className = "course-row";
 	newRow.innerHTML = `
@@ -456,24 +535,114 @@ function addCourse(semNum) {
         </td>
         <td><button class="remove-course-btn" onclick="removeCourse(this)">×</button></td>
     `;
-
 	tbody.appendChild(newRow);
+
+	// Add to cards
+	const newCard = document.createElement("div");
+	newCard.className = "course-card";
+	newCard.innerHTML = `
+        <div class="course-card-header">
+            <span class="course-card-number">#${rowCount + 1}</span>
+            <button class="remove-course-btn" onclick="removeCourse(this)">×</button>
+        </div>
+        <div class="course-card-body">
+            <div class="course-card-field">
+                <label>Code</label>
+                <input type="text" class="course-code" placeholder="Course Code" oninput="autoSaveData()">
+            </div>
+            <div class="course-card-field">
+                <label>Course Name</label>
+                <input type="text" class="course-name" placeholder="Course Name" oninput="autoSaveData()">
+            </div>
+            <div class="course-card-row">
+                <div class="course-card-field">
+                    <label>Credit</label>
+                    <input type="number" class="course-credit" min="0" max="6" step="0.75" value="3.0" oninput="calculateCGPA()">
+                </div>
+                <div class="course-card-field">
+                    <label>Current Grade</label>
+                    <select class="course-grade-current" onchange="updateGradePoint(this); syncExpectedGrade(this)">
+                        <option value="">-</option>
+                        <option value="4.00">A+</option>
+                        <option value="3.75">A</option>
+                        <option value="3.50">A-</option>
+                        <option value="3.25">B+</option>
+                        <option value="3.00">B</option>
+                        <option value="2.75">B-</option>
+                        <option value="2.50">C+</option>
+                        <option value="2.25">C</option>
+                        <option value="2.00">D</option>
+                        <option value="0.00">F</option>
+                    </select>
+                </div>
+            </div>
+            <div class="course-card-row">
+                <div class="course-card-field">
+                    <label>Grade Point</label>
+                    <div class="grade-point-display">-</div>
+                </div>
+                <div class="course-card-field">
+                    <label>Expected Grade</label>
+                    <select class="course-grade-expected" onchange="calculateCGPA()">
+                        <option value="">-</option>
+                        <option value="4.00">A+</option>
+                        <option value="3.75">A</option>
+                        <option value="3.50">A-</option>
+                        <option value="3.25">B+</option>
+                        <option value="3.00">B</option>
+                        <option value="2.75">B-</option>
+                        <option value="2.50">C+</option>
+                        <option value="2.25">C</option>
+                        <option value="2.00">D</option>
+                        <option value="0.00">F</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    `;
+	cardsContainer.appendChild(newCard);
+
 	renumberRows(semNum);
 }
 
 // Remove course
 function removeCourse(btn) {
 	const row = btn.closest("tr");
-	const tbody = row.parentElement;
-	const semester = row.closest(".semester-block");
+	const card = btn.closest(".course-card");
+	const semester = btn.closest(".semester-block");
 	const semNum = semester.id.replace("semester-", "");
 
-	if (tbody.children.length > 1) {
-		row.remove();
-		renumberRows(parseInt(semNum));
-		calculateCGPA();
-	} else {
-		alert("At least one course is required per semester!");
+	if (row) {
+		const tbody = row.parentElement;
+		if (tbody.children.length > 1) {
+			const rowIndex = Array.from(tbody.children).indexOf(row);
+			const cardsContainer = semester.querySelector(".courses-cards-container");
+			const cards = cardsContainer.querySelectorAll(".course-card");
+
+			row.remove();
+			if (cards[rowIndex]) cards[rowIndex].remove();
+
+			renumberRows(parseInt(semNum));
+			calculateCGPA();
+		} else {
+			alert("At least one course is required per semester!");
+		}
+	} else if (card) {
+		const cardsContainer = card.parentElement;
+		const cards = cardsContainer.querySelectorAll(".course-card");
+		if (cards.length > 1) {
+			const cardIndex = Array.from(cards).indexOf(card);
+			const tbody = semester.querySelector("tbody");
+			const rows = tbody.querySelectorAll(".course-row");
+
+			card.remove();
+			if (rows[cardIndex]) rows[cardIndex].remove();
+
+			renumberRows(parseInt(semNum));
+			calculateCGPA();
+		} else {
+			alert("At least one course is required per semester!");
+		}
 	}
 }
 
@@ -481,10 +650,19 @@ function removeCourse(btn) {
 function renumberRows(semNum) {
 	const semester = document.getElementById(`semester-${semNum}`);
 	const rows = semester.querySelectorAll(".course-row");
+	const cards = semester.querySelectorAll(".course-card");
+
 	rows.forEach((row, idx) => {
 		const slNoCell = row.querySelector(".sl-no");
 		if (slNoCell) {
 			slNoCell.textContent = idx + 1;
+		}
+	});
+
+	cards.forEach((card, idx) => {
+		const cardNumber = card.querySelector(".course-card-number");
+		if (cardNumber) {
+			cardNumber.textContent = `#${idx + 1}`;
 		}
 	});
 }
@@ -492,22 +670,105 @@ function renumberRows(semNum) {
 // Update grade point display when letter grade is selected
 function updateGradePoint(selectElement) {
 	const row = selectElement.closest("tr");
-	const gradePointCell = row.querySelector(".grade-point");
+	const card = selectElement.closest(".course-card");
 	const gradePoint = parseFloat(selectElement.value);
+	const gradeText = !isNaN(gradePoint) ? gradePoint.toFixed(2) : "-";
 
-	if (!isNaN(gradePoint)) {
-		gradePointCell.textContent = gradePoint.toFixed(2);
-	} else {
-		gradePointCell.textContent = "-";
+	// Update table view
+	if (row) {
+		const gradePointCell = row.querySelector(".grade-point");
+		if (gradePointCell) {
+			gradePointCell.textContent = gradeText;
+		}
+
+		// Sync with card
+		const semester = row.closest(".semester-block");
+		const tbody = row.parentElement;
+		const rowIndex = Array.from(tbody.children).indexOf(row);
+		const cards = semester.querySelectorAll(".course-card");
+		if (cards[rowIndex]) {
+			const cardGradeDisplay = cards[rowIndex].querySelector(
+				".grade-point-display"
+			);
+			if (cardGradeDisplay) cardGradeDisplay.textContent = gradeText;
+
+			const cardGradeSelect = cards[rowIndex].querySelector(
+				".course-grade-current"
+			);
+			if (cardGradeSelect) cardGradeSelect.value = selectElement.value;
+		}
+	}
+
+	// Update card view
+	if (card) {
+		const gradePointDisplay = card.querySelector(".grade-point-display");
+		if (gradePointDisplay) {
+			gradePointDisplay.textContent = gradeText;
+		}
+
+		// Sync with table
+		const semester = card.closest(".semester-block");
+		const cardsContainer = card.parentElement;
+		const cardIndex = Array.from(cardsContainer.children).indexOf(card);
+		const rows = semester.querySelectorAll(".course-row");
+		if (rows[cardIndex]) {
+			const rowGradeCell = rows[cardIndex].querySelector(".grade-point");
+			if (rowGradeCell) rowGradeCell.textContent = gradeText;
+
+			const rowGradeSelect = rows[cardIndex].querySelector(
+				".course-grade-current"
+			);
+			if (rowGradeSelect) rowGradeSelect.value = selectElement.value;
+		}
 	}
 
 	// Sync expected grade
-	const expectedGradeSelect = row.querySelector(".course-grade-expected");
-	if (expectedGradeSelect) {
-		expectedGradeSelect.value = selectElement.value;
+	syncExpectedGrade(selectElement);
+	calculateCGPA();
+}
+
+// Sync expected grade with current grade
+function syncExpectedGrade(selectElement) {
+	const row = selectElement.closest("tr");
+	const card = selectElement.closest(".course-card");
+
+	if (row) {
+		const expectedGradeSelect = row.querySelector(".course-grade-expected");
+		if (expectedGradeSelect) {
+			expectedGradeSelect.value = selectElement.value;
+		}
+
+		// Sync with card
+		const semester = row.closest(".semester-block");
+		const tbody = row.parentElement;
+		const rowIndex = Array.from(tbody.children).indexOf(row);
+		const cards = semester.querySelectorAll(".course-card");
+		if (cards[rowIndex]) {
+			const cardExpectedSelect = cards[rowIndex].querySelector(
+				".course-grade-expected"
+			);
+			if (cardExpectedSelect) cardExpectedSelect.value = selectElement.value;
+		}
 	}
 
-	calculateCGPA();
+	if (card) {
+		const expectedGradeSelect = card.querySelector(".course-grade-expected");
+		if (expectedGradeSelect) {
+			expectedGradeSelect.value = selectElement.value;
+		}
+
+		// Sync with table
+		const semester = card.closest(".semester-block");
+		const cardsContainer = card.parentElement;
+		const cardIndex = Array.from(cardsContainer.children).indexOf(card);
+		const rows = semester.querySelectorAll(".course-row");
+		if (rows[cardIndex]) {
+			const rowExpectedSelect = rows[cardIndex].querySelector(
+				".course-grade-expected"
+			);
+			if (rowExpectedSelect) rowExpectedSelect.value = selectElement.value;
+		}
+	}
 }
 
 // Calculate CGPA
