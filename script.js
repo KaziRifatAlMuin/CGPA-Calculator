@@ -1,6 +1,7 @@
 // Global variables
 let baseSession = null;
 let currentDepartment = 'cse'; // 'cse' or 'other'
+let gradeDistributionChart = null; // Chart.js instance
 
 // Change department and regenerate semesters
 function changeDepartment() {
@@ -164,6 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     generateAllSemesters();
     attachEventListeners();
     loadSavedData();
+    initGradeDistributionChart();
     calculateCGPA();
 });
 
@@ -485,6 +487,9 @@ function calculateCGPA() {
     
     // Update academic status
     updateAcademicStatus(parseFloat(cgpa), completedCredits);
+    
+    // Update grade distribution chart
+    updateGradeDistributionChart();
     
     // Auto-update smart planner if target CGPA is set
     if (hasTarget) {
@@ -1040,3 +1045,194 @@ function attachEventListeners() {
     });
     document.getElementById('departmentSelect').addEventListener('change', autoSaveData);
 }
+
+// Initialize Grade Distribution Chart
+function initGradeDistributionChart() {
+    const ctx = document.getElementById('gradeDistributionChart');
+    if (!ctx) return;
+    
+    gradeDistributionChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'D', 'F'],
+            datasets: [{
+                label: 'Number of Courses',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                backgroundColor: [
+                    'rgba(16, 185, 129, 0.8)',  // A+ - Green
+                    'rgba(52, 211, 153, 0.8)',  // A - Light Green
+                    'rgba(110, 231, 183, 0.8)', // A- - Lighter Green
+                    'rgba(59, 130, 246, 0.8)',  // B+ - Blue
+                    'rgba(96, 165, 250, 0.8)',  // B - Light Blue
+                    'rgba(147, 197, 253, 0.8)', // B- - Lighter Blue
+                    'rgba(251, 191, 36, 0.8)',  // C+ - Yellow
+                    'rgba(252, 211, 77, 0.8)',  // C - Light Yellow
+                    'rgba(251, 146, 60, 0.8)',  // D - Orange
+                    'rgba(239, 68, 68, 0.8)'    // F - Red
+                ],
+                borderColor: [
+                    'rgba(16, 185, 129, 1)',
+                    'rgba(52, 211, 153, 1)',
+                    'rgba(110, 231, 183, 1)',
+                    'rgba(59, 130, 246, 1)',
+                    'rgba(96, 165, 250, 1)',
+                    'rgba(147, 197, 253, 1)',
+                    'rgba(251, 191, 36, 1)',
+                    'rgba(252, 211, 77, 1)',
+                    'rgba(251, 146, 60, 1)',
+                    'rgba(239, 68, 68, 1)'
+                ],
+                borderWidth: 2,
+                borderRadius: 6,
+                barThickness: 'flex',
+                maxBarThickness: 50
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Grade Distribution Across All Courses',
+                    font: {
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    color: '#1e293b',
+                    padding: {
+                        bottom: 20
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const gradePoints = [4.00, 3.75, 3.50, 3.25, 3.00, 2.75, 2.50, 2.25, 2.00, 0.00];
+                            return [
+                                `Courses: ${context.parsed.y}`,
+                                `Grade Point: ${gradePoints[context.dataIndex].toFixed(2)}`
+                            ];
+                        }
+                    },
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
+                    displayColors: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1,
+                        font: {
+                            size: 11
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    }
+                },
+                x: {
+                    ticks: {
+                        font: {
+                            size: 11,
+                            weight: 'bold'
+                        }
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Update Grade Distribution Chart
+function updateGradeDistributionChart() {
+    const gradeCount = {
+        '4.00': 0,  // A+
+        '3.75': 0,  // A
+        '3.50': 0,  // A-
+        '3.25': 0,  // B+
+        '3.00': 0,  // B
+        '2.75': 0,  // B-
+        '2.50': 0,  // C+
+        '2.25': 0,  // C
+        '2.00': 0,  // D
+        '0.00': 0   // F
+    };
+    
+    let totalCourses = 0;
+    let totalGradePoints = 0;
+    
+    // Count grades from all semesters
+    for (let semNum = 1; semNum <= 8; semNum++) {
+        const semester = document.getElementById(`semester-${semNum}`);
+        if (!semester) continue;
+        
+        const rows = semester.querySelectorAll('.course-row');
+        rows.forEach(row => {
+            const gradeSelect = row.querySelector('.course-grade-current');
+            const gradeValue = gradeSelect.value;
+            
+            if (gradeValue && gradeCount.hasOwnProperty(gradeValue)) {
+                gradeCount[gradeValue]++;
+                totalCourses++;
+                totalGradePoints += parseFloat(gradeValue);
+            }
+        });
+    }
+    
+    // Update chart data
+    if (gradeDistributionChart) {
+        gradeDistributionChart.data.datasets[0].data = [
+            gradeCount['4.00'],
+            gradeCount['3.75'],
+            gradeCount['3.50'],
+            gradeCount['3.25'],
+            gradeCount['3.00'],
+            gradeCount['2.75'],
+            gradeCount['2.50'],
+            gradeCount['2.25'],
+            gradeCount['2.00'],
+            gradeCount['0.00']
+        ];
+        gradeDistributionChart.update();
+    }
+    
+    // Update statistics
+    document.getElementById('totalCourses').textContent = totalCourses;
+    
+    const avgGPA = totalCourses > 0 ? (totalGradePoints / totalCourses).toFixed(2) : '0.00';
+    document.getElementById('averageGPA').textContent = avgGPA;
+    
+    // Find most common grade
+    let maxCount = 0;
+    let mostCommonGrade = '-';
+    const gradeLabels = {
+        '4.00': 'A+',
+        '3.75': 'A',
+        '3.50': 'A-',
+        '3.25': 'B+',
+        '3.00': 'B',
+        '2.75': 'B-',
+        '2.50': 'C+',
+        '2.25': 'C',
+        '2.00': 'D',
+        '0.00': 'F'
+    };
+    
+    for (const [grade, count] of Object.entries(gradeCount)) {
+        if (count > maxCount) {
+            maxCount = count;
+            mostCommonGrade = gradeLabels[grade];
+        }
+    }
+    
+    document.getElementById('mostCommonGrade').textContent = totalCourses > 0 ? `${mostCommonGrade} (${maxCount})` : '-';
+}
+

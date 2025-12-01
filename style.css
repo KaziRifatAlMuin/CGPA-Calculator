@@ -24,8 +24,14 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
-    padding: 20px;
+    padding: 10px;
     color: var(--text-primary);
+}
+
+@media (min-width: 768px) {
+    body {
+        padding: 20px;
+    }
 }
 
 .container {
@@ -40,35 +46,68 @@ body {
 header {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
-    padding: 30px;
+    padding: 20px 15px;
     text-align: center;
 }
 
 header h1 {
-    font-size: 2.2rem;
+    font-size: 1.5rem;
     margin-bottom: 5px;
     font-weight: 700;
+    line-height: 1.3;
 }
 
 .subtitle {
-    font-size: 1.05rem;
+    font-size: 0.85rem;
     opacity: 0.95;
     margin-bottom: 5px;
 }
 
 .subtitle-small {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     opacity: 0.85;
+}
+
+@media (min-width: 768px) {
+    header {
+        padding: 30px;
+    }
+    
+    header h1 {
+        font-size: 2.2rem;
+    }
+    
+    .subtitle {
+        font-size: 1.05rem;
+    }
+    
+    .subtitle-small {
+        font-size: 0.9rem;
+    }
 }
 
 /* Student Info Section */
 .student-info-section {
     background: var(--bg-color);
-    padding: 20px 30px;
+    padding: 15px;
     border-bottom: 2px solid var(--border-color);
     display: grid;
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 15px;
+}
+
+@media (min-width: 480px) {
+    .student-info-section {
+        padding: 20px;
+        gap: 18px;
+    }
+}
+
+@media (min-width: 768px) {
+    .student-info-section {
+        padding: 20px 30px;
+        gap: 20px;
+    }
 }
 
 .student-input-group {
@@ -131,85 +170,189 @@ header h1 {
 
 .grade-scale {
     background: var(--bg-color);
-    padding: 15px 30px;
+    padding: 12px 15px;
     border-bottom: 1px solid var(--border-color);
 }
 
 .grade-scale h3 {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     color: var(--text-primary);
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 .grade-info {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 6px;
 }
 
 .grade-info span {
     background: white;
-    padding: 5px 10px;
+    padding: 4px 8px;
     border-radius: 6px;
-    font-size: 0.85rem;
+    font-size: 0.7rem;
     font-weight: 500;
     border: 1px solid var(--border-color);
     color: var(--text-secondary);
 }
 
+@media (min-width: 480px) {
+    .grade-scale {
+        padding: 15px 20px;
+    }
+    
+    .grade-scale h3 {
+        font-size: 0.95rem;
+        margin-bottom: 10px;
+    }
+    
+    .grade-info {
+        gap: 8px;
+    }
+    
+    .grade-info span {
+        font-size: 0.75rem;
+        padding: 5px 9px;
+    }
+}
+
+@media (min-width: 768px) {
+    .grade-scale {
+        padding: 15px 30px;
+    }
+    
+    .grade-scale h3 {
+        font-size: 1rem;
+    }
+    
+    .grade-info {
+        gap: 10px;
+    }
+    
+    .grade-info span {
+        font-size: 0.85rem;
+        padding: 5px 10px;
+    }
+}
+
 /* Summary Section */
 .summary-section {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 30px;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 15px;
     background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
 }
 
 .summary-card {
     background: white;
-    padding: 20px;
+    padding: 15px;
     border-radius: 12px;
     box-shadow: var(--shadow);
     text-align: center;
 }
 
 .summary-card h3 {
-    font-size: 1rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .cgpa-display {
-    font-size: 3rem;
+    font-size: 2.2rem;
     font-weight: 700;
     color: var(--primary-color);
     margin-bottom: 5px;
 }
 
 .percentage-display {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
 }
 
 .credit-display {
-    font-size: 2.5rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: var(--success-color);
     margin-bottom: 5px;
 }
 
 .credit-info {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
 }
 
 .status-display {
-    font-size: 1.3rem;
+    font-size: 1rem;
     font-weight: 600;
-    padding: 10px;
+    padding: 8px;
     border-radius: 8px;
     margin-top: 5px;
+}
+
+@media (min-width: 480px) {
+    .summary-section {
+        gap: 15px;
+        padding: 20px;
+    }
+    
+    .summary-card {
+        padding: 18px;
+    }
+    
+    .summary-card h3 {
+        font-size: 0.9rem;
+    }
+    
+    .cgpa-display {
+        font-size: 2.5rem;
+    }
+    
+    .credit-display {
+        font-size: 2rem;
+    }
+    
+    .status-display {
+        font-size: 1.15rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .summary-section {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 30px;
+    }
+    
+    .summary-card {
+        padding: 20px;
+    }
+    
+    .summary-card h3 {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+    
+    .cgpa-display {
+        font-size: 3rem;
+    }
+    
+    .percentage-display {
+        font-size: 0.9rem;
+    }
+    
+    .credit-display {
+        font-size: 2.5rem;
+    }
+    
+    .credit-info {
+        font-size: 0.9rem;
+    }
+    
+    .status-display {
+        font-size: 1.3rem;
+        padding: 10px;
+    }
 }
 
 .status-excellent {
@@ -328,15 +471,37 @@ header h1 {
 
 /* Semester Blocks */
 .all-semesters {
-    padding: 20px 30px;
+    padding: 10px;
 }
 
 .semester-block {
     background: var(--bg-color);
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     border-radius: 12px;
-    padding: 20px;
+    padding: 12px;
     box-shadow: var(--shadow);
+}
+
+@media (min-width: 480px) {
+    .all-semesters {
+        padding: 15px;
+    }
+    
+    .semester-block {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+}
+
+@media (min-width: 768px) {
+    .all-semesters {
+        padding: 20px 30px;
+    }
+    
+    .semester-block {
+        padding: 20px;
+        margin-bottom: 25px;
+    }
 }
 
 .semester-header-block {
@@ -347,17 +512,41 @@ header h1 {
 
 .semester-info {
     display: flex;
-    gap: 30px;
-    font-size: 0.95rem;
+    gap: 10px;
+    font-size: 0.7rem;
     color: var(--text-primary);
     flex-wrap: wrap;
-    padding: 10px;
+    padding: 8px;
     background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
     border-radius: 8px;
 }
 
 .semester-info span {
-    font-size: 0.9rem;
+    font-size: 0.7rem;
+}
+
+@media (min-width: 480px) {
+    .semester-info {
+        gap: 15px;
+        font-size: 0.8rem;
+        padding: 9px;
+    }
+    
+    .semester-info span {
+        font-size: 0.8rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .semester-info {
+        gap: 30px;
+        font-size: 0.95rem;
+        padding: 10px;
+    }
+    
+    .semester-info span {
+        font-size: 0.9rem;
+    }
 }
 
 .semester-info strong {
@@ -379,15 +568,19 @@ header h1 {
 
 .courses-table-container {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -12px;
+    padding: 0 12px;
 }
 
 .courses-table {
     width: 100%;
+    min-width: 650px;
     border-collapse: collapse;
     background: white;
     border-radius: 8px;
     overflow: hidden;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .courses-table thead {
@@ -396,15 +589,53 @@ header h1 {
 }
 
 .courses-table th {
-    padding: 12px 10px;
+    padding: 6px 3px;
     text-align: left;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.68rem;
+    white-space: nowrap;
 }
 
 .courses-table td {
-    padding: 10px;
+    padding: 4px 2px;
     border-bottom: 1px solid var(--border-color);
+}
+
+@media (min-width: 480px) {
+    .courses-table-container {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .courses-table {
+        min-width: 750px;
+        margin-bottom: 12px;
+    }
+    
+    .courses-table th {
+        padding: 8px 5px;
+        font-size: 0.8rem;
+    }
+    
+    .courses-table td {
+        padding: 6px 4px;
+    }
+}
+
+@media (min-width: 768px) {
+    .courses-table {
+        min-width: auto;
+        margin-bottom: 15px;
+    }
+    
+    .courses-table th {
+        padding: 12px 10px;
+        font-size: 0.9rem;
+    }
+    
+    .courses-table td {
+        padding: 10px;
+    }
 }
 
 .courses-table tbody tr:hover {
@@ -415,31 +646,66 @@ header h1 {
     text-align: center;
     font-weight: 600;
     color: var(--text-secondary);
-    width: 60px;
+    width: 30px;
+    font-size: 0.6rem;
+}
+
+@media (min-width: 480px) {
+    .sl-no {
+        width: 45px;
+        font-size: 0.75rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .sl-no {
+        width: 60px;
+        font-size: 0.9rem;
+    }
 }
 
 .letter-grade {
     text-align: center;
-    font-weight: 700;
+    font-weight: 600;
     color: var(--primary-color);
-    font-size: 1rem;
-    width: 100px;
+    font-size: 0.6rem;
+    width: 35px;
+}
+
+@media (min-width: 480px) {
+    .letter-grade {
+        font-size: 0.72rem;
+        font-weight: 700;
+        width: 55px;
+    }
+}
+
+@media (min-width: 768px) {
+    .letter-grade {
+        font-size: 0.9rem;
+        width: 100px;
+    }
 }
 
 .course-code, .course-name, .course-credit {
     width: 100%;
-    padding: 8px;
+    padding: 3px 2px;
     border: 1px solid var(--border-color);
-    border-radius: 6px;
-    font-size: 0.9rem;
+    border-radius: 3px;
+    font-size: 0.56rem;
+    min-height: 26px;
 }
 
 .course-code {
-    max-width: 100px;
+    max-width: 65px;
+}
+
+.course-name {
+    font-size: 0.54rem;
 }
 
 .course-credit {
-    max-width: 80px;
+    max-width: 42px;
 }
 
 .course-code:focus, .course-name:focus, .course-credit:focus {
@@ -449,11 +715,12 @@ header h1 {
 
 .course-grade-current, .course-grade-expected {
     width: 100%;
-    padding: 8px;
+    padding: 3px 1px;
     border: 1px solid var(--border-color);
-    border-radius: 6px;
-    font-size: 0.9rem;
+    border-radius: 3px;
+    font-size: 0.6rem;
     background: white;
+    min-height: 26px;
 }
 
 .course-grade-current:focus, .course-grade-expected:focus {
@@ -461,16 +728,65 @@ header h1 {
     border-color: var(--primary-color);
 }
 
+@media (min-width: 480px) {
+    .course-code, .course-name, .course-credit {
+        padding: 6px 5px;
+        font-size: 0.72rem;
+        min-height: 32px;
+    }
+    
+    .course-name {
+        font-size: 0.7rem;
+    }
+    
+    .course-code {
+        max-width: 85px;
+    }
+    
+    .course-credit {
+        max-width: 55px;
+    }
+    
+    .course-grade-current, .course-grade-expected {
+        padding: 6px 4px;
+        font-size: 0.75rem;
+        min-height: 32px;
+    }
+}
+
+@media (min-width: 768px) {
+    .course-code, .course-name, .course-credit {
+        padding: 8px;
+        font-size: 0.9rem;
+        min-height: auto;
+    }
+    
+    .course-code {
+        max-width: 100px;
+    }
+    
+    .course-credit {
+        max-width: 80px;
+    }
+    
+    .course-grade-current, .course-grade-expected {
+        padding: 8px;
+        font-size: 0.9rem;
+        min-height: auto;
+    }
+}
+
 .remove-course-btn {
     background: var(--error-color);
     color: white;
     border: none;
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    font-size: 1.3rem;
+    width: 22px;
+    height: 22px;
+    border-radius: 3px;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: all 0.3s ease;
+    touch-action: manipulation;
 }
 
 .remove-course-btn:hover {
@@ -478,42 +794,97 @@ header h1 {
     transform: scale(1.1);
 }
 
+.remove-course-btn:active {
+    transform: scale(0.95);
+}
+
+@media (min-width: 480px) {
+    .remove-course-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 1.2rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .remove-course-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 1.3rem;
+    }
+}
+
 /* Semester Summary */
 .semester-summary {
     background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
-    padding: 15px 20px;
+    padding: 10px 12px;
     border-radius: 8px;
-    margin-top: 10px;
+    margin-top: 8px;
     border: 1px solid var(--border-color);
 }
 
 .summary-row {
     display: flex;
-    gap: 30px;
-    margin: 8px 0;
+    gap: 10px;
+    margin: 6px 0;
     flex-wrap: wrap;
-    font-size: 0.95rem;
+    font-size: 0.75rem;
 }
 
 .summary-row span {
     color: var(--text-primary);
+    white-space: nowrap;
 }
 
 .summary-row strong {
     color: var(--primary-color);
-    margin-left: 5px;
+    margin-left: 3px;
+}
+
+@media (min-width: 480px) {
+    .semester-summary {
+        padding: 12px 15px;
+    }
+    
+    .summary-row {
+        gap: 15px;
+        font-size: 0.85rem;
+    }
+    
+    .summary-row strong {
+        margin-left: 4px;
+    }
+}
+
+@media (min-width: 768px) {
+    .semester-summary {
+        padding: 15px 20px;
+        margin-top: 10px;
+    }
+    
+    .summary-row {
+        gap: 30px;
+        margin: 8px 0;
+        font-size: 0.95rem;
+    }
+    
+    .summary-row strong {
+        margin-left: 5px;
+    }
 }
 
 .add-course-btn-sem {
     background: var(--success-color);
     color: white;
     border: none;
-    padding: 8px 16px;
+    padding: 10px 16px;
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    touch-action: manipulation;
+    width: 100%;
 }
 
 .add-course-btn-sem:hover {
@@ -521,12 +892,44 @@ header h1 {
     transform: translateY(-2px);
 }
 
+.add-course-btn-sem:active {
+    transform: translateY(0);
+}
+
+@media (min-width: 480px) {
+    .add-course-btn-sem {
+        width: auto;
+        padding: 9px 16px;
+        font-size: 0.88rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .add-course-btn-sem {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+}
+
 /* Semester action buttons */
 .semester-actions {
     display: flex;
-    gap: 10px;
-    margin: 15px 0;
+    gap: 8px;
+    margin: 10px 0;
     flex-wrap: wrap;
+}
+
+@media (min-width: 480px) {
+    .semester-actions {
+        gap: 10px;
+        margin: 12px 0;
+    }
+}
+
+@media (min-width: 768px) {
+    .semester-actions {
+        margin: 15px 0;
+    }
 }
 
 .recalculate-btn-sem {
@@ -667,21 +1070,48 @@ header h1 {
 /* Action Buttons */
 .action-buttons-main {
     display: flex;
-    gap: 15px;
-    padding: 20px 30px;
+    gap: 10px;
+    padding: 15px;
     flex-wrap: wrap;
 }
 
 .calculate-btn, .calculate-btn-main, .reset-btn-main, .save-btn, .load-btn {
     flex: 1;
-    min-width: 150px;
-    padding: 14px 24px;
+    min-width: 100%;
+    padding: 12px 20px;
     border: none;
     border-radius: 10px;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    touch-action: manipulation;
+}
+
+@media (min-width: 480px) {
+    .action-buttons-main {
+        gap: 12px;
+        padding: 18px 20px;
+    }
+    
+    .calculate-btn, .calculate-btn-main, .reset-btn-main, .save-btn, .load-btn {
+        min-width: calc(50% - 6px);
+        padding: 13px 22px;
+        font-size: 0.95rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .action-buttons-main {
+        gap: 15px;
+        padding: 20px 30px;
+    }
+    
+    .calculate-btn, .calculate-btn-main, .reset-btn-main, .save-btn, .load-btn {
+        min-width: 150px;
+        padding: 14px 24px;
+        font-size: 1rem;
+    }
 }
 
 .calculate-btn, .calculate-btn-main {
@@ -784,10 +1214,150 @@ header h1 {
 /* Smart Target Calculator - Compact Design */
 .smart-target-section {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 25px 30px;
-    margin: 20px 30px;
+    padding: 15px;
+    margin: 15px 10px;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* Grade Distribution Section */
+.grade-distribution-section {
+    background: var(--bg-color);
+    padding: 15px;
+    margin: 15px 10px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.grade-distribution-header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.grade-distribution-header h3 {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.grade-distribution-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.grade-distribution-card {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: var(--shadow);
+}
+
+.chart-container {
+    position: relative;
+    height: 250px;
+    margin-bottom: 20px;
+}
+
+.grade-stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding-top: 15px;
+    border-top: 2px solid var(--border-color);
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: var(--bg-color);
+    border-radius: 8px;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.stat-value {
+    font-size: 1rem;
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+@media (min-width: 480px) {
+    .grade-distribution-section {
+        padding: 20px;
+        margin: 18px 15px;
+    }
+    
+    .grade-distribution-header h3 {
+        font-size: 1.5rem;
+    }
+    
+    .grade-distribution-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .grade-distribution-card {
+        padding: 20px;
+    }
+    
+    .chart-container {
+        height: 280px;
+    }
+    
+    .grade-stats {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 768px) {
+    .grade-distribution-section {
+        padding: 25px 30px;
+        margin: 20px 30px;
+    }
+    
+    .grade-distribution-header h3 {
+        font-size: 1.6rem;
+    }
+    
+    .grade-distribution-subtitle {
+        font-size: 0.95rem;
+    }
+    
+    .grade-distribution-card {
+        padding: 25px;
+    }
+    
+    .chart-container {
+        height: 320px;
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
+    }
+    
+    .stat-value {
+        font-size: 1.1rem;
+    }
+}
+
+@media (min-width: 480px) {
+    .smart-target-section {
+        padding: 20px;
+        margin: 18px 15px;
+    }
+}
+
+@media (min-width: 768px) {
+    .smart-target-section {
+        padding: 25px 30px;
+        margin: 20px 30px;
+    }
 }
 
 .smart-target-header {
@@ -815,19 +1385,43 @@ header h1 {
 }
 
 .smart-card-content {
-    padding: 25px;
+    padding: 15px;
 }
 
 .smart-inputs-grid {
     display: flex;
-    gap: 15px;
+    gap: 10px;
     align-items: flex-end;
     flex-wrap: wrap;
 }
 
 .smart-inputs-grid .input-group {
     flex: 1;
-    min-width: 200px;
+    min-width: 100%;
+}
+
+@media (min-width: 480px) {
+    .smart-card-content {
+        padding: 20px;
+    }
+    
+    .smart-inputs-grid .input-group {
+        min-width: 180px;
+    }
+}
+
+@media (min-width: 768px) {
+    .smart-card-content {
+        padding: 25px;
+    }
+    
+    .smart-inputs-grid {
+        gap: 15px;
+    }
+    
+    .smart-inputs-grid .input-group {
+        min-width: 200px;
+    }
 }
 
 .smart-inputs-grid .input-group label {
@@ -910,11 +1504,26 @@ header h1 {
 
 footer {
     background: var(--bg-color);
-    padding: 20px 30px;
+    padding: 15px;
     text-align: center;
     color: var(--text-secondary);
     border-top: 1px solid var(--border-color);
-    font-size: 0.9rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+@media (min-width: 480px) {
+    footer {
+        padding: 18px 20px;
+        font-size: 0.82rem;
+    }
+}
+
+@media (min-width: 768px) {
+    footer {
+        padding: 20px 30px;
+        font-size: 0.9rem;
+    }
 }
 
 /* Responsive Design */
@@ -922,124 +1531,29 @@ footer {
     .container {
         margin: 10px;
     }
-    
-    .courses-table {
-        font-size: 0.85rem;
-    }
-    
-    .courses-table th, .courses-table td {
-        padding: 8px 6px;
-    }
 }
 
-@media (max-width: 768px) {
-    header h1 {
-        font-size: 1.8rem;
-    }
-    
-    .summary-section {
-        grid-template-columns: 1fr;
-        padding: 20px;
-    }
-    
-    .target-inputs {
-        flex-direction: column;
-    }
-    
-    .semester-header-block {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-    
-    .semester-gpa-display {
-        flex-direction: column;
-        gap: 5px;
-    }
-    
-    .action-buttons-main {
-        flex-direction: column;
-    }
-    
-    .courses-table {
-        font-size: 0.8rem;
-    }
-    
-    .grade-info {
-        gap: 6px;
-    }
-    
-    .grade-info span {
-        font-size: 0.75rem;
-        padding: 4px 8px;
-    }
-    
-    .semester-target-inputs {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .semester-target-inputs input {
-        width: 100%;
-    }
-    
-    .semester-actions {
-        flex-direction: column;
-    }
-    
-    .add-course-btn-sem,
-    .recalculate-btn-sem {
-        width: 100%;
-    }
-    
-    .bottom-summary-cards {
-        grid-template-columns: 1fr;
-    }
-    
-    .bottom-value {
-        font-size: 2rem;
-    }
-    
-    .smart-inputs-grid {
-        flex-direction: column;
-    }
-    
-    .smart-inputs-grid .input-group {
-        width: 100%;
-    }
-    
-    .smart-calculate-btn {
-        width: 100%;
-    }
-    
-    .smart-target-section {
-        padding: 20px;
-        margin: 15px;
-    }
-}
-
+/* Additional mobile optimizations */
 @media (max-width: 480px) {
-    body {
-        padding: 10px;
+    /* Ensure horizontal scrolling works smoothly */
+    .courses-table-container::-webkit-scrollbar {
+        height: 6px;
     }
     
-    header {
-        padding: 20px 15px;
+    .courses-table-container::-webkit-scrollbar-thumb {
+        background: var(--primary-color);
+        border-radius: 3px;
     }
     
-    .all-semesters {
-        padding: 15px;
+    /* Make text selections easier on mobile */
+    input, select, button {
+        -webkit-tap-highlight-color: rgba(37, 99, 235, 0.2);
     }
     
-    .semester-block {
-        padding: 15px;
-    }
-    
-    .cgpa-display {
-        font-size: 2.5rem;
-    }
-    
-    .credit-display {
-        font-size: 2rem;
+    /* Prevent zoom on input focus for iOS */
+    input[type="text"],
+    input[type="number"],
+    select {
+        font-size: 16px;
     }
 }
