@@ -1,12 +1,21 @@
+/* ===================================
+   CGPA CALCULATOR - ORGANIZED CSS
+   Mobile First Design with Desktop Overrides
+   All Media Queries at End
+   =================================== */
+
+/* === BASE RESET === */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* === CSS VARIABLES === */
 :root {
     --primary-color: #2563eb;
     --primary-dark: #1e40af;
+    --primary-hover: #1d4ed8;
     --secondary-color: #8b5cf6;
     --success-color: #10b981;
     --warning-color: #f59e0b;
@@ -20,6 +29,7 @@
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
+/* === BODY === */
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -28,21 +38,17 @@ body {
     color: var(--text-primary);
 }
 
-@media (min-width: 1024px) {
-    body {
-        padding: 20px;
-    }
-}
-
+/* === CONTAINER === */
 .container {
     max-width: 1400px;
-    margin: 0 auto;
+    margin: 10px auto;
     background: var(--card-bg);
     border-radius: 16px;
     box-shadow: var(--shadow-lg);
     overflow: hidden;
 }
 
+/* === HEADER === */
 header {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
@@ -68,25 +74,7 @@ header h1 {
     opacity: 0.85;
 }
 
-@media (min-width: 1024px) {
-    header {
-        padding: 30px;
-    }
-    
-    header h1 {
-        font-size: 2.2rem;
-    }
-    
-    .subtitle {
-        font-size: 1.05rem;
-    }
-    
-    .subtitle-small {
-        font-size: 0.9rem;
-    }
-}
-
-/* Student Info Section */
+/* === STUDENT INFO SECTION === */
 .student-info-section {
     background: var(--bg-color);
     padding: 15px;
@@ -106,28 +94,13 @@ header h1 {
     grid-column: 1 / -1;
 }
 
-@media (min-width: 1024px) {
-    .student-info-section {
-        grid-template-columns: repeat(3, 1fr);
-        padding: 20px 30px;
-        gap: 20px;
-    }
-}
-
 .student-input-group label {
     font-size: 0.9rem;
     font-weight: 600;
     color: var(--text-primary);
 }
 
-.student-input-group input {
-    padding: 10px 15px;
-    border: 2px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 0.95rem;
-    transition: all 0.3s;
-}
-
+.student-input-group input,
 .student-input-group select {
     padding: 10px 15px;
     border: 2px solid var(--border-color);
@@ -135,6 +108,9 @@ header h1 {
     font-size: 0.95rem;
     transition: all 0.3s;
     background: white;
+}
+
+.student-input-group select {
     cursor: pointer;
 }
 
@@ -156,6 +132,7 @@ header h1 {
     text-align: center;
 }
 
+/* === GRADE SCALE === */
 .grade-scale {
     background: var(--bg-color);
     padding: 12px 15px;
@@ -184,26 +161,7 @@ header h1 {
     color: var(--text-secondary);
 }
 
-@media (min-width: 1024px) {
-    .grade-scale {
-        padding: 15px 30px;
-    }
-    
-    .grade-scale h3 {
-        font-size: 1rem;
-    }
-    
-    .grade-info {
-        gap: 10px;
-    }
-    
-    .grade-info span {
-        font-size: 0.85rem;
-        padding: 5px 10px;
-    }
-}
-
-/* Summary Section */
+/* === SUMMARY SECTION === */
 .summary-section {
     display: grid;
     grid-template-columns: 1fr;
@@ -258,44 +216,7 @@ header h1 {
     margin-top: 5px;
 }
 
-@media (min-width: 1024px) {
-    .summary-section {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-        padding: 30px;
-    }
-    
-    .summary-card {
-        padding: 20px;
-    }
-    
-    .summary-card h3 {
-        font-size: 1rem;
-        margin-bottom: 10px;
-    }
-    
-    .cgpa-display {
-        font-size: 3rem;
-    }
-    
-    .percentage-display {
-        font-size: 0.9rem;
-    }
-    
-    .credit-display {
-        font-size: 2.5rem;
-    }
-    
-    .credit-info {
-        font-size: 0.9rem;
-    }
-    
-    .status-display {
-        font-size: 1.3rem;
-        padding: 10px;
-    }
-}
-
+/* Status Colors */
 .status-excellent {
     background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
     color: #065f46;
@@ -321,7 +242,7 @@ header h1 {
     color: #991b1b;
 }
 
-/* Target Section */
+/* === TARGET SECTION === */
 .target-section {
     background: white;
     margin: 20px 30px;
@@ -373,44 +294,53 @@ header h1 {
     margin-top: 20px;
 }
 
-.target-achievable, .target-impossible, .target-achieved {
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 15px;
+.target-achievable,
+.target-impossible,
+.target-achieved {
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
 }
 
 .target-achievable {
-    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-    border: 2px solid var(--success-color);
+    background-color: rgba(46, 204, 113, 0.1);
+    border-left: 4px solid var(--success-color);
 }
 
 .target-impossible {
-    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-    border: 2px solid var(--error-color);
+    background-color: rgba(231, 76, 60, 0.1);
+    border-left: 4px solid var(--error-color);
 }
 
 .target-achieved {
-    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-    border: 2px solid var(--primary-color);
+    background-color: rgba(52, 152, 219, 0.1);
+    border-left: 4px solid var(--primary-color);
 }
 
-.target-achievable h4, .target-impossible h4, .target-achieved h4 {
-    margin-bottom: 10px;
+.target-achievable h4,
+.target-impossible h4,
+.target-achieved h4 {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+}
+
+.target-achievable p,
+.target-impossible p,
+.target-achieved p {
+    margin: 5px 0;
 }
 
 .warning-text {
     color: var(--error-color);
     font-weight: 600;
-    margin-top: 10px;
 }
 
 .info-text {
-    color: var(--primary-color);
-    font-weight: 500;
-    margin-top: 10px;
+    color: var(--success-color);
+    font-weight: 600;
 }
 
-/* Semester Blocks */
+/* === SEMESTER BLOCKS === */
 .all-semesters {
     padding: 10px;
 }
@@ -421,17 +351,6 @@ header h1 {
     border-radius: 12px;
     padding: 12px;
     box-shadow: var(--shadow);
-}
-
-@media (min-width: 1024px) {
-    .all-semesters {
-        padding: 20px 30px;
-    }
-    
-    .semester-block {
-        padding: 20px;
-        margin-bottom: 25px;
-    }
 }
 
 .semester-header-block {
@@ -455,18 +374,6 @@ header h1 {
     font-size: 0.7rem;
 }
 
-@media (min-width: 1024px) {
-    .semester-info {
-        gap: 30px;
-        font-size: 0.95rem;
-        padding: 10px;
-    }
-    
-    .semester-info span {
-        font-size: 0.9rem;
-    }
-}
-
 .semester-info strong {
     color: var(--primary-color);
     margin-right: 5px;
@@ -484,18 +391,13 @@ header h1 {
     font-size: 1.1rem;
 }
 
+/* === TABLE VIEW (Desktop Only - Hidden on Mobile) === */
 .courses-table-container {
-    display: none !important;
-}
-
-@media (min-width: 1024px) {
-    .courses-table-container {
-        display: block !important;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        margin: 0 -12px;
-        padding: 0 12px;
-    }
+    display: none;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -12px;
+    padding: 0 12px;
 }
 
 .courses-table {
@@ -526,23 +428,6 @@ header h1 {
     border-bottom: 1px solid var(--border-color);
 }
 
-@media (min-width: 1024px) {
-    .courses-table {
-        min-width: auto;
-        margin-bottom: 15px;
-        width: 100%;
-    }
-    
-    .courses-table th {
-        padding: 8px 6px;
-        font-size: 0.8rem;
-    }
-    
-    .courses-table td {
-        padding: 6px;
-    }
-}
-
 .courses-table tbody tr:hover {
     background: var(--bg-color);
 }
@@ -555,13 +440,6 @@ header h1 {
     font-size: 0.6rem;
 }
 
-@media (min-width: 1024px) {
-    .sl-no {
-        width: 50px;
-        font-size: 0.8rem;
-    }
-}
-
 .letter-grade {
     text-align: center;
     font-weight: 600;
@@ -570,14 +448,10 @@ header h1 {
     width: 35px;
 }
 
-@media (min-width: 1024px) {
-    .letter-grade {
-        font-size: 0.8rem;
-        width: 80px;
-    }
-}
-
-.course-code, .course-name, .course-credit {
+/* === INPUT FIELDS === */
+.course-code,
+.course-name,
+.course-credit {
     width: 100%;
     padding: 3px 2px;
     border: 1px solid var(--border-color);
@@ -586,24 +460,19 @@ header h1 {
     min-height: 26px;
 }
 
-.course-code {
-    /* Removed max-width for full width on mobile */
-}
-
 .course-name {
     font-size: 0.43rem;
 }
 
-.course-credit {
-    /* Removed max-width for full width on mobile */
-}
-
-.course-code:focus, .course-name:focus, .course-credit:focus {
+.course-code:focus,
+.course-name:focus,
+.course-credit:focus {
     outline: none;
     border-color: var(--primary-color);
 }
 
-.course-grade-current, .course-grade-expected {
+.course-grade-current,
+.course-grade-expected {
     width: 100%;
     padding: 3px 1px;
     border: 1px solid var(--border-color);
@@ -613,33 +482,13 @@ header h1 {
     min-height: 26px;
 }
 
-.course-grade-current:focus, .course-grade-expected:focus {
+.course-grade-current:focus,
+.course-grade-expected:focus {
     outline: none;
     border-color: var(--primary-color);
 }
 
-@media (min-width: 1024px) {
-    .course-code, .course-name, .course-credit {
-        padding: 6px;
-        font-size: 0.8rem;
-        min-height: auto;
-    }
-    
-    .course-code {
-        max-width: 120px;
-    }
-    
-    .course-credit {
-        /* Removed max-width to allow full space like name field */
-    }
-    
-    .course-grade-current, .course-grade-expected {
-        padding: 6px;
-        font-size: 0.8rem;
-        min-height: auto;
-    }
-}
-
+/* === REMOVE BUTTON === */
 .remove-course-btn {
     background: var(--error-color);
     color: white;
@@ -662,26 +511,12 @@ header h1 {
     transform: scale(0.95);
 }
 
-@media (min-width: 1024px) {
-    .remove-course-btn {
-        width: 28px;
-        height: 28px;
-        font-size: 1.1rem;
-    }
-}
-
-/* Mobile Card View */
+/* === MOBILE CARD VIEW (Mobile Only - Hidden on Desktop) === */
 .courses-cards-container {
-    display: flex !important;
+    display: flex;
     flex-direction: column;
     gap: 15px;
     margin-bottom: 15px;
-}
-
-@media (min-width: 1024px) {
-    .courses-cards-container {
-        display: none !important;
-    }
 }
 
 .course-card {
@@ -773,7 +608,7 @@ header h1 {
     justify-content: center;
 }
 
-/* Semester Summary */
+/* === SEMESTER SUMMARY === */
 .semester-summary {
     background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
     padding: 10px 12px;
@@ -800,23 +635,7 @@ header h1 {
     margin-left: 3px;
 }
 
-@media (min-width: 1024px) {
-    .semester-summary {
-        padding: 15px 20px;
-        margin-top: 10px;
-    }
-    
-    .summary-row {
-        gap: 30px;
-        margin: 8px 0;
-        font-size: 0.95rem;
-    }
-    
-    .summary-row strong {
-        margin-left: 5px;
-    }
-}
-
+/* === BUTTONS === */
 .add-course-btn-sem {
     background: var(--success-color);
     color: white;
@@ -840,27 +659,11 @@ header h1 {
     transform: translateY(0);
 }
 
-@media (min-width: 1024px) {
-    .add-course-btn-sem {
-        width: auto;
-        padding: 8px 16px;
-        font-size: 0.9rem;
-    }
-}
-
-/* Semester action buttons */
 .semester-actions {
     display: flex;
     gap: 8px;
     margin: 10px 0;
     flex-wrap: wrap;
-}
-
-@media (min-width: 1024px) {
-    .semester-actions {
-        gap: 10px;
-        margin: 15px 0;
-    }
 }
 
 .recalculate-btn-sem {
@@ -880,7 +683,7 @@ header h1 {
     transform: translateY(-2px);
 }
 
-/* Semester target calculator */
+/* === SEMESTER TARGET CALCULATOR === */
 .semester-target {
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     padding: 20px;
@@ -935,52 +738,6 @@ header h1 {
     margin-top: 15px;
 }
 
-.target-achievable,
-.target-impossible,
-.target-achieved {
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 10px;
-}
-
-.target-achievable {
-    background-color: rgba(46, 204, 113, 0.1);
-    border-left: 4px solid var(--success-color);
-}
-
-.target-impossible {
-    background-color: rgba(231, 76, 60, 0.1);
-    border-left: 4px solid var(--error-color);
-}
-
-.target-achieved {
-    background-color: rgba(52, 152, 219, 0.1);
-    border-left: 4px solid var(--primary-color);
-}
-
-.target-achievable h4,
-.target-impossible h4,
-.target-achieved h4 {
-    margin: 0 0 10px 0;
-    font-size: 1rem;
-}
-
-.target-achievable p,
-.target-impossible p,
-.target-achieved p {
-    margin: 5px 0;
-}
-
-.warning-text {
-    color: var(--error-color);
-    font-weight: 600;
-}
-
-.info-text {
-    color: var(--success-color);
-    font-weight: 600;
-}
-
 .toggle-target-btn {
     width: 100%;
     padding: 10px;
@@ -998,7 +755,7 @@ header h1 {
     background-color: #2c3e50;
 }
 
-/* Action Buttons */
+/* === ACTION BUTTONS === */
 .action-buttons-main {
     display: flex;
     gap: 10px;
@@ -1006,7 +763,11 @@ header h1 {
     flex-wrap: wrap;
 }
 
-.calculate-btn, .calculate-btn-main, .reset-btn-main, .save-btn, .load-btn {
+.calculate-btn,
+.calculate-btn-main,
+.reset-btn-main,
+.save-btn,
+.load-btn {
     flex: 1;
     min-width: 100%;
     padding: 12px 20px;
@@ -1019,25 +780,14 @@ header h1 {
     touch-action: manipulation;
 }
 
-@media (min-width: 1024px) {
-    .action-buttons-main {
-        gap: 15px;
-        padding: 20px 30px;
-    }
-    
-    .calculate-btn, .calculate-btn-main, .reset-btn-main, .save-btn, .load-btn {
-        min-width: 150px;
-        padding: 14px 24px;
-        font-size: 1rem;
-    }
-}
-
-.calculate-btn, .calculate-btn-main {
+.calculate-btn,
+.calculate-btn-main {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
 }
 
-.calculate-btn:hover, .calculate-btn-main:hover {
+.calculate-btn:hover,
+.calculate-btn-main:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
 }
@@ -1069,7 +819,7 @@ header h1 {
     background: #d97706;
 }
 
-/* Bottom Summary Section */
+/* === BOTTOM SUMMARY SECTION === */
 .bottom-summary-section {
     background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
     padding: 30px;
@@ -1129,7 +879,7 @@ header h1 {
     font-weight: 500;
 }
 
-/* Smart Target Calculator - Compact Design */
+/* === SMART TARGET CALCULATOR === */
 .smart-target-section {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 15px;
@@ -1138,7 +888,114 @@ header h1 {
     box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
-/* Grade Distribution Section */
+.smart-target-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.smart-target-header h3 {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.smart-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    font-weight: 400;
+}
+
+.smart-target-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.smart-card-content {
+    padding: 15px;
+}
+
+.smart-inputs-grid {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.smart-inputs-grid .input-group {
+    flex: 1;
+    min-width: 100%;
+}
+
+.smart-inputs-grid .input-group label {
+    display: block;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.smart-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.smart-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.smart-calculate-btn {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.smart-calculate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+.smart-calculate-btn:active {
+    transform: translateY(0);
+}
+
+.smart-target-result {
+    margin-top: 20px;
+}
+
+.smart-target-result .target-achievable,
+.smart-target-result .target-impossible,
+.smart-target-result .target-achieved {
+    animation: slideIn 0.4s ease-out;
+}
+
+.advanced-target-result {
+    margin-top: 20px;
+}
+
+.advanced-target-result hr {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 10px 0;
+}
+
+/* === GRADE DISTRIBUTION SECTION === */
 .grade-distribution-section {
     background: var(--bg-color);
     padding: 15px;
@@ -1206,7 +1063,278 @@ header h1 {
     font-weight: 700;
 }
 
+/* === FOOTER === */
+footer {
+    background: var(--bg-color);
+    padding: 15px;
+    text-align: center;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-color);
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+footer a:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+/* === ANIMATIONS === */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===================================
+   MEDIA QUERIES - DESKTOP (1024px+)
+   =================================== */
+
 @media (min-width: 1024px) {
+    /* Body & Container */
+    body {
+        padding: 20px;
+    }
+    
+    .container {
+        margin: 0 auto;
+    }
+    
+    /* Header */
+    header {
+        padding: 30px;
+    }
+    
+    header h1 {
+        font-size: 2.2rem;
+    }
+    
+    .subtitle {
+        font-size: 1.05rem;
+    }
+    
+    .subtitle-small {
+        font-size: 0.9rem;
+    }
+    
+    /* Student Info */
+    .student-info-section {
+        grid-template-columns: repeat(3, 1fr);
+        padding: 20px 30px;
+        gap: 20px;
+    }
+    
+    /* Grade Scale */
+    .grade-scale {
+        padding: 15px 30px;
+    }
+    
+    .grade-scale h3 {
+        font-size: 1rem;
+    }
+    
+    .grade-info {
+        gap: 10px;
+    }
+    
+    .grade-info span {
+        font-size: 0.85rem;
+        padding: 5px 10px;
+    }
+    
+    /* Summary Section */
+    .summary-section {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 30px;
+    }
+    
+    .summary-card {
+        padding: 20px;
+    }
+    
+    .summary-card h3 {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+    
+    .cgpa-display {
+        font-size: 3rem;
+    }
+    
+    .percentage-display {
+        font-size: 0.9rem;
+    }
+    
+    .credit-display {
+        font-size: 2.5rem;
+    }
+    
+    .credit-info {
+        font-size: 0.9rem;
+    }
+    
+    .status-display {
+        font-size: 1.3rem;
+        padding: 10px;
+    }
+    
+    /* Semesters */
+    .all-semesters {
+        padding: 20px 30px;
+    }
+    
+    .semester-block {
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+    
+    .semester-info {
+        gap: 30px;
+        font-size: 0.95rem;
+        padding: 10px;
+    }
+    
+    .semester-info span {
+        font-size: 0.9rem;
+    }
+    
+    /* SHOW TABLE, HIDE CARDS on Desktop */
+    .courses-table-container {
+        display: block !important;
+    }
+    
+    .courses-cards-container {
+        display: none !important;
+    }
+    
+    /* Table Styling */
+    .courses-table {
+        min-width: auto;
+        margin-bottom: 15px;
+        width: 100%;
+    }
+    
+    .courses-table th {
+        padding: 8px 6px;
+        font-size: 0.8rem;
+    }
+    
+    .courses-table td {
+        padding: 6px;
+    }
+    
+    .sl-no {
+        width: 50px;
+        font-size: 0.8rem;
+    }
+    
+    .letter-grade {
+        font-size: 0.8rem;
+        width: 80px;
+    }
+    
+    /* Input Fields - Desktop */
+    .course-code,
+    .course-name,
+    .course-credit {
+        padding: 6px;
+        font-size: 0.8rem;
+        min-height: auto;
+    }
+    
+    .course-code {
+        max-width: 120px;
+    }
+    
+    .course-grade-current,
+    .course-grade-expected {
+        padding: 6px;
+        font-size: 0.8rem;
+        min-height: auto;
+    }
+    
+    /* Remove Button */
+    .remove-course-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 1.1rem;
+    }
+    
+    /* Semester Summary */
+    .semester-summary {
+        padding: 15px 20px;
+        margin-top: 10px;
+    }
+    
+    .summary-row {
+        gap: 30px;
+        margin: 8px 0;
+        font-size: 0.95rem;
+    }
+    
+    .summary-row strong {
+        margin-left: 5px;
+    }
+    
+    /* Buttons */
+    .add-course-btn-sem {
+        width: auto;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+    
+    .semester-actions {
+        gap: 10px;
+        margin: 15px 0;
+    }
+    
+    .action-buttons-main {
+        gap: 15px;
+        padding: 20px 30px;
+    }
+    
+    .calculate-btn,
+    .calculate-btn-main,
+    .reset-btn-main,
+    .save-btn,
+    .load-btn {
+        min-width: 150px;
+        padding: 14px 24px;
+        font-size: 1rem;
+    }
+    
+    /* Smart Target Section */
+    .smart-target-section {
+        padding: 25px 30px;
+        margin: 20px 30px;
+    }
+    
+    .smart-card-content {
+        padding: 25px;
+    }
+    
+    .smart-inputs-grid {
+        gap: 15px;
+    }
+    
+    .smart-inputs-grid .input-group {
+        min-width: 200px;
+    }
+    
+    /* Grade Distribution */
     .grade-distribution-section {
         padding: 25px 30px;
         margin: 20px 30px;
@@ -1239,232 +1367,27 @@ header h1 {
     .stat-value {
         font-size: 1.1rem;
     }
-}
-
-@media (min-width: 1024px) {
-    .grade-distribution-section {
-        padding: 25px 30px;
-        margin: 20px 30px;
-    }
     
-    .grade-distribution-header h3 {
-        font-size: 1.6rem;
-    }
-    
-    .grade-distribution-subtitle {
-        font-size: 0.95rem;
-    }
-    
-    .grade-distribution-card {
-        padding: 25px;
-    }
-    
-    .chart-container {
-        height: 320px;
-    }
-    
-    .stat-label {
-        font-size: 0.9rem;
-    }
-    
-    .stat-value {
-        font-size: 1.1rem;
-    }
-}
-
-@media (min-width: 1024px) {
-    .smart-target-section {
-        padding: 25px 30px;
-        margin: 20px 30px;
-    }
-}
-
-.smart-target-header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.smart-target-header h3 {
-    color: white;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 5px;
-}
-
-.smart-subtitle {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 0.95rem;
-    font-weight: 400;
-}
-
-.smart-target-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.smart-card-content {
-    padding: 15px;
-}
-
-.smart-inputs-grid {
-    display: flex;
-    gap: 10px;
-    align-items: flex-end;
-    flex-wrap: wrap;
-}
-
-.smart-inputs-grid .input-group {
-    flex: 1;
-    min-width: 100%;
-}
-
-@media (min-width: 1024px) {
-    .smart-card-content {
-        padding: 25px;
-    }
-    
-    .smart-inputs-grid {
-        gap: 15px;
-    }
-    
-    .smart-inputs-grid .input-group {
-        min-width: 200px;
-    }
-}
-
-.smart-inputs-grid .input-group label {
-    display: block;
-    font-weight: 600;
-    color: var(--primary-color);
-    margin-bottom: 8px;
-    font-size: 0.95rem;
-}
-
-.smart-input {
-    width: 100%;
-    padding: 12px 16px;
-    border: 2px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    background: white;
-}
-
-.smart-input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
-.smart-calculate-btn {
-    padding: 12px 24px;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
-}
-
-.smart-calculate-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
-}
-
-.smart-calculate-btn:active {
-    transform: translateY(0);
-}
-
-.smart-target-result {
-    margin-top: 20px;
-}
-
-.smart-target-result .target-achievable,
-.smart-target-result .target-impossible,
-.smart-target-result .target-achieved {
-    animation: slideIn 0.4s ease-out;
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.advanced-target-result {
-    margin-top: 20px;
-}
-
-.advanced-target-result hr {
-    border: none;
-    border-top: 1px solid var(--border-color);
-    margin: 10px 0;
-}
-
-footer {
-    background: var(--bg-color);
-    padding: 15px;
-    text-align: center;
-    color: var(--text-secondary);
-    border-top: 1px solid var(--border-color);
-    font-size: 0.75rem;
-    line-height: 1.5;
-}
-
-footer a {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s ease;
-}
-
-footer a:hover {
-    color: var(--primary-hover);
-    text-decoration: underline;
-}
-
-@media (min-width: 1024px) {
+    /* Footer */
     footer {
         padding: 20px 30px;
         font-size: 0.9rem;
     }
 }
 
-/* Responsive Design */
+/* === MOBILE SPECIFIC (max-width: 1023px) === */
 @media (max-width: 1023px) {
-    .container {
-        margin: 10px;
-    }
-    
-    /* Hide table completely on mobile */
-    .courses-table-container {
-        display: none !important;
-    }
-    
-    /* Show cards on mobile */
-    .courses-cards-container {
-        display: flex !important;
-    }
-    
-    /* Make text selections easier on mobile */
-    input, select, button {
-        -webkit-tap-highlight-color: rgba(37, 99, 235, 0.2);
-    }
-    
     /* Prevent zoom on input focus for iOS */
     input[type="text"],
     input[type="number"],
     select {
         font-size: 16px;
+    }
+    
+    /* Make text selections easier on mobile */
+    input,
+    select,
+    button {
+        -webkit-tap-highlight-color: rgba(37, 99, 235, 0.2);
     }
 }
